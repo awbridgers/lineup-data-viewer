@@ -1,24 +1,24 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import logo from './logo.svg';
+import Table from 'rc-table'
+import { FirebaseContext } from './components/FirebaseProvider';
 import './App.css';
+import { Lineup } from './lineupClass';
+import { columns } from './util/tableSetup';
+import { totalData } from './types';
 
 function App() {
+  const data = useContext(FirebaseContext);
+  const [sortedData, setSortedData] = useState<Lineup[]>([]);
+  useEffect(()=>{
+    if(data){
+      const sorted = data.current.total.sort((a,b)=>b.time - a.time)
+      setSortedData(sorted)
+    }
+  },[data])
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Table columns={columns} data = {sortedData}  />
     </div>
   );
 }
