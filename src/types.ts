@@ -16,13 +16,16 @@ export interface gameData {
   game: string
 };
 
-export interface totalData {
-  [year:string]: {
-    games: gameData[];
-    total: Lineup[];
-    conference: Lineup[];
-  }
+export interface seasonData {
+  games: gameData[];
+  total: Lineup[];
+  conference: Lineup[]
 }
+
+export interface totalData {
+  [year:string]: seasonData
+}
+
 
 export interface rawData {
   [year:string] : gameData[];

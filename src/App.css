@@ -1,38 +1,358 @@
 .App {
+  background-color: black;
+  text-align: center;
+  height: 100vh;
+}
+.App-header {
+  background-color: black;
+  height: auto;
+  padding-top: 20px;
+  padding-bottom: 10px;
+  color: white;
+  width:100%;
+  text-align: center;
+}
+.lineupTable table{
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+.rc-table-thead {
+  position: sticky;
+  top:0px;
+}
+
+.lineupTable {
+  margin-left: auto;
+  margin-right: auto;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.lineupTable td {
+  padding: 3px 2px;
+  word-wrap: break-word;
+}
+.lineupTable th {
+  background: #42444e;
+  color: #fff;
+  text-align: center;
+  font-size: 18px;
+  height: 50px;
+  word-wrap: break-word;
+}
+.lineupTable tr:first-child th:first-child {
+  border-top-left-radius: 6px;
+}
+.lineupTable tr:first-child th:last-child {
+  border-top-right-radius: 6px;
+}
+.lineupTable td {
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+}
+.lineupTable td:first-child {
+  border-left: 1px solid #c6c9cc;
+}
+.lineupTable tr:nth-child(even) td {
+  background: #888888;
+}
+.lineupTable tr:nth-child(odd) td {
+  background: #D3D3D3;
+}
+.lineupTable tr:last-child td:first-child {
+  border-bottom-left-radius: 6px;
+}
+.lineupTable tr:last-child td:last-child {
+  border-bottom-right-radius: 6px;
+}
+.click{
+  cursor: pointer;
+  font-size: 18px;
+}
+.lineupHeader{
+  width:25%;
+}
+.lineupTable td, .playerTable td, .finderTable td{
+  font-weight: bold;
+  height: 58px;
+  font-size: 18px;
+  font-family: "Tahoma"
+}
+.pre{
+  white-space: pre;
+}
+.select {
+  margin: auto;
+  font-size: 16px;
+}
+h1{
+  margin-bottom: 0px;
+}
+.type{
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  -webkit-appearance: none;
+  width: 90px;
+  height: 50px;
+  background-color: #808080;
+  border: none;
+  cursor: pointer;
+  vertical-align: middle;
+  margin: 5px;
+  padding: 0px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.finderButton{
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  -webkit-appearance: none;
+  width: 100px;
+  height: 50px;
+  background-color: #808080;
+  border: none;
+  cursor: pointer;
+  vertical-align: middle;
+}
+.finder{
+  width: 40vw;
+  min-height: 400px;
+  min-width: 400px;
+  background-color: #DAA520;
+  margin: auto;
+  color: black;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+.finderSelections{
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  flex-flow:column;
+}
+.finderplayer{
+  margin: 5px;
+}
+.omitStyle{
+  display: inline;
+  color: blue;
+  text-decoration: underline;
+}
+.omitStyle:hover{
+  cursor:default;
+}
+.help{
+  position: absolute;
+  background: black;
+  color: #cfb53b;
+  width:100%;
+}
+.glossary{
   color: white;
+  text-align: center;
+  padding-top: 20px;
 }
 
-.App-link {
-  color: #61dafb;
+
+.terms tr td, .terms th, .terms tr{
+  background: black;
+  border: 0px;
+}
+.terms th {
+  vertical-align: middle;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  width: 25%;
+  font-size: 20px;
+  border-bottom: 1px solid white;
+}
+.terms td{
+  vertical-align: bottom;
+  font-size: 18px;
+}
+.terms td.eq{
+  vertical-align: top;
+  border-bottom: 1px solid white;
+}
+.terms {
+  border-spacing: 0px;
+  text-align: center;
+  border: none;
+  width: 65%;
+  margin: auto;
+  border-top: 2px solid white;
+  padding-bottom: 20px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.finderText{
+  font-size: 16px;
+}
+#finderInstr{
+  font-weight: bold;
+}
+
+.header, .gamesHeader{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  margin: auto;
+}
+.headerButtonContainer{
+  width: 210px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#back{
+  background: red;
+}
+
+#wakeScore, #oppScore{
+  font-size: 20px;
+  font-weight: bold;
+  flex-grow: 1;
+}
+
+
+.title{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 90px;
+}
+.dropdown{
+  margin-top: auto;
+}
+.finderSubmit{
+  margin-top: 10px;
+}
+.finderSubmit button{
+  width: 75px;
+  height: 40px;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 5px;
+}
+
+
+
+
+@media only screen
+  and (max-width: 667px) and (orientation:portrait){
+  /* mobile layout here */
+  .lineupTable th, .click {
+    font-size: 11px;
+    word-spacing: 50px;
+    height: 27px;
   }
-  to {
-    transform: rotate(360deg);
+  .lineupTable th, .lineupTable td {
+    padding: 6px 0px;
+  }
+  .App-header {
+    padding-top: 0px;
+    height: auto;
+    padding-bottom: 5px;
+
+  }
+  .header, .gamesHeader{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    margin: auto;
+  }
+
+  .lineupTable td, .playerTable td, .finderTable td{
+    font-weight: bold;
+    font-size: 12px;
+    font-family: "Tahoma"
+  }
+  .lineupTable{
+    table-layout: auto;
+  }
+
+  #pre{
+    font-size: 10px;
+    font-weight: bold;
+    padding-left: 1px;
+    padding-right: 1px;
+  }
+  .headerButtonContainer{
+    width: auto;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .type{
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    -webkit-appearance: none;
+    width: 90px;
+    height: 50px;
+    padding:0px;
+    background-color: #808080;
+    border: none;
+    cursor: pointer;
+    margin: auto;
+    margin: 5px;
+  }
+  .finderButton{
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    -webkit-appearance: none;
+    width: 90px;
+    height: 50px;
+    background-color: #808080;
+    border: none;
+    cursor: pointer;
+  }
+  #oppScore{
+    flex-grow: 1;
+    font-size: 16px;
+  }
+  #wakeScore{
+    flex-grow: 1;
+    font-size: 16px;
+  }
+
+  .title h1{
+    font-size: 1.75em;
+  }
+  .terms th{
+    font-size: 18px;
+  }
+  .terms td{
+    font-size: 14px;
+  }
+  .terms{
+    width: 90%;
+  }
+
+}
+
+@media only screen and (max-width: 667px) and (orientation: landscape){
+  .lineupTable td, .playerTable td, .finderTable td {
+    font-weight: bold;
+    font-size: 16px;
+    font-family: "Tahoma"
+  }
+
+  .lineupTable th, .click{
+    font-size: 16px;
+    height:40px;
+  }
+  #pre{
+    font-size: 16px;
+  }
+  .terms th{
+    font-size: 18px;
   }
 }
