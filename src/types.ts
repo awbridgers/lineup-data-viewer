@@ -18,7 +18,7 @@ export interface gameData {
 
 export interface seasonData {
   games: gameData[];
-  total: Lineup[];
+  season: Lineup[];
   conference: Lineup[]
 }
 

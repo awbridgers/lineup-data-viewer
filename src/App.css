@@ -6,11 +6,53 @@
 .App-header {
   background-color: black;
   height: auto;
-  padding-top: 20px;
-  padding-bottom: 10px;
-  color: white;
   width:100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+}
+.headerGameControls{
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  min-height:130px;
+  flex-grow: 1;
+}
+
+.gameInfo{
   text-align: center;
+  font-size: 18px;
+  min-height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px 0px;
+  flex-grow: 1;
+  color: white;
+}
+.totals{
+  font-size: 24px;
+  font-weight: bold;
+}
+.score{
+  font-size: 20px;
+  font-weight: bold;
+}
+.title{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  height: 90px;
+}
+.select {
+  font-size: 16px;
+  width:200px;
+  align-self: flex-end;
+}
+.selectContainer{
+  display:flex;
 }
 .lineupTable table{
   border-collapse: separate !important;
@@ -68,9 +110,7 @@
   cursor: pointer;
   font-size: 18px;
 }
-.lineupHeader{
-  width:25%;
-}
+
 .lineupTable td, .playerTable td, .finderTable td{
   font-weight: bold;
   height: 58px;
@@ -80,10 +120,7 @@
 .pre{
   white-space: pre;
 }
-.select {
-  margin: auto;
-  font-size: 16px;
-}
+
 h1{
   margin-bottom: 0px;
 }
@@ -198,8 +235,9 @@ h1{
   display: flex;
   width: 100%;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   margin: auto;
+
 }
 .headerButtonContainer{
   width: 210px;
@@ -218,13 +256,7 @@ h1{
 }
 
 
-.title{
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: space-around;
-  height: 90px;
-}
+
 .dropdown{
   margin-top: auto;
 }

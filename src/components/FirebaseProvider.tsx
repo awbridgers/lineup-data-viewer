@@ -11,7 +11,6 @@ interface IProvider  {
 export const FirebaseContext = createContext<totalData | undefined>({});
 
 const FirebaseProvider = ({children}:IProvider) => {
-  const [rawData, setRawData] = useState<rawData>()
   const [data, setData] = useState<totalData>()
   useEffect(() => {
     const fetchData = async () => {
@@ -28,27 +27,18 @@ const FirebaseProvider = ({children}:IProvider) => {
             const unit = {...lineup.val(), players: lineup.key}
             lineups.push(new Lineup(unit))
           })
-          gameArray.push({...game.val(), game: game.key, lineups: lineups})
+          gameArray.push({...game.val(), game: game.key!.replace(/_/g, ' '), lineups: lineups})
         })
-        results[yearKey] = gameArray;
+        results[yearKey] = {
+          games: gameArray.sort((a,b)=>a.order - b.order),
+          season: parseData(gameArray, false),
+          conference: parseData(gameArray, true)
+        }
       })
-      setRawData(results)
+      setData(results)
     };
     fetchData();
   }, []);
-  useEffect(()=>{
-    if(rawData){
-      let results : totalData = {}
-      for(const year in rawData){
-        results[year] = {
-          games: rawData[year],
-          total: parseData(rawData[year], false),
-          conference: parseData(rawData[year], true)
-        }
-      }
-      setData(results);
-    }
-  },[rawData])
   return <FirebaseContext.Provider value={data}>{children}</FirebaseContext.Provider>;
 };
 export default FirebaseProvider;

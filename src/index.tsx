@@ -4,12 +4,12 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import FirebaseProvider from './components/FirebaseProvider'
-import Routing from './routing'
+
 
 ReactDOM.render(
   <React.StrictMode>
     <FirebaseProvider>
-      <Routing />
+      <App />
     </FirebaseProvider>
   </React.StrictMode>,
   document.getElementById('root')

@@ -12,7 +12,6 @@ export const parseData = (games: gameData[], conference: boolean):Lineup[]=>{
         lineupData.push(new Lineup(lineup));  //create a new lineup so the original data isn't altered
       }else{
         if(lineupData[index].players === 'Alondes Williams-Daivien Williamson-Dallas Walton-Isaiah Mucius-Jake LaRavia' && conference){
-          console.log(lineupData[index].pointsFor, lineup.pointsFor);
         }
         lineupData[index].combineLineup(lineup)
       }
