@@ -20,6 +20,15 @@ interface yearChoice {
   label: string;
   value: string;
 }
+//custom control compononet for select
+const Control = (props: any) => {
+  return (
+    <>
+      <div className="label">{props.title}</div>
+      <components.Control {...props} />
+    </>
+  );
+};
 
 const Header = ({
   games,
@@ -64,11 +73,18 @@ const Header = ({
             options={yearOptions}
             onChange={(picked) => changeYear(picked!.value)}
             isClearable={false}
-            value={yearOptions.find(x=>x.value === selectedYear)}
+            value={yearOptions.find((x) => x.value === selectedYear)}
             getOptionLabel={(option) => option.label}
             getOptionValue={(option) => option.value}
-            className="select"
+            className="select year"
             isSearchable={false}
+            styles={{
+              control: (provided) => ({...provided, padding: '5px 0px'}),
+              valueContainer: (provided) => ({...provided, marginTop: 'auto'}),
+            }}
+            components={{
+              Control: (props) => <Control {...props} title="Season" />,
+            }}
           />
         </div>
       </div>
@@ -92,11 +108,18 @@ const Header = ({
             options={gameOptions}
             value={gameOptions.find((x) => x.value === selectedGame)}
             onChange={(picked) => changeGame(picked!.value)}
-            className="select"
+            className="game select"
             isSearchable={false}
             isClearable={false}
             getOptionLabel={(option) => option.label}
             getOptionValue={(option) => option.value.toFixed()}
+            styles={{
+              control: (provided) => ({...provided, padding: '5px 0px'}),
+              valueContainer: (provided) => ({...provided, marginTop: 'auto'}),
+            }}
+            components={{
+              Control: (props) => <Control {...props} title="Game" />,
+            }}
           />
         </div>
       </div>
