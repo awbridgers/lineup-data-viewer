@@ -16,6 +16,7 @@ const App = () => {
   const [selectedYear, setSelectedYear] = useState<string>('current');
   //games are order 0-32 so using -2 for season and -1 for conference totals
   const [selectedGame, setSelectedGame] = useState<number>(-2);
+  const [selectedStat, setSelectedStat] = useState<string>('total')
   const data = useContext(FirebaseContext);
   const changeYear = (year:string)=>{
     setSelectedGame(-2);
@@ -37,12 +38,14 @@ const App = () => {
       <Header
         selectedYear={selectedYear}
         selectedGame = {selectedGame}
+        selectedStat = {selectedStat}
         games={data[selectedYear].games}
         years={Object.keys(data)}
         changeYear = {changeYear}
         changeGame = {setSelectedGame}
+        changeStat = {setSelectedStat}
       />
-      <Table data = {sortedData}/>
+      <Table data = {sortedData} type = {selectedStat}/>
     </div>
   );
 };

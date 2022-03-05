@@ -67,7 +67,7 @@ body {
   font-size: 14px;
   font-weight: 500;
 }
-.year {
+.year, .stat {
   width: 125px;
 }
 .game {

@@ -9,8 +9,10 @@ interface iProps {
   years: string[];
   selectedYear: string;
   selectedGame: number;
+  selectedStat: string;
   changeYear: (picked: string) => void;
   changeGame: (picked: number) => void;
+  changeStat: (picked: string)=>void;
 }
 interface gameChoice {
   label: string;
@@ -20,6 +22,28 @@ interface yearChoice {
   label: string;
   value: string;
 }
+interface statChoice {
+  label: string;
+  value: 'total' | 'net' | 'advanced' | 'shooting'
+}
+
+const statOptions: statChoice[] = [{
+  label: 'Total',
+  value: 'total'
+},
+{
+  label: 'Net',
+  value: 'net'
+},
+{
+  label: 'Advanced',
+  value: 'advanced'
+},
+{
+  label: 'Shooting',
+  value: 'shooting'
+}]
+
 //custom control compononet for select
 const Control = (props: any) => {
   return (
@@ -37,6 +61,8 @@ const Header = ({
   selectedYear,
   changeGame,
   changeYear,
+  selectedStat,
+  changeStat
 }: iProps) => {
   const [gameOptions, setGameOptions] = useState<gameChoice[]>([]);
   const [yearOptions, setyearOptions] = useState<yearChoice[]>([]);
@@ -71,7 +97,7 @@ const Header = ({
         <div className="selectContainer">
           <Select
             options={yearOptions}
-            onChange={(picked) => changeYear(picked!.value)}
+            onChange={(picked) => picked ? changeYear(picked.value) : console.log('no option selected')}
             isClearable={false}
             value={yearOptions.find((x) => x.value === selectedYear)}
             getOptionLabel={(option) => option.label}
@@ -107,7 +133,7 @@ const Header = ({
           <Select<gameChoice>
             options={gameOptions}
             value={gameOptions.find((x) => x.value === selectedGame)}
-            onChange={(picked) => changeGame(picked!.value)}
+            onChange={(picked) => picked ? changeGame(picked.value) : console.log('No option selected')}
             className="game select"
             isSearchable={false}
             isClearable={false}
@@ -121,6 +147,27 @@ const Header = ({
               Control: (props) => <Control {...props} title="Game" />,
             }}
           />
+        </div>
+      </div>
+      <div className = 'headerStatControls'>
+        <div className= 'selectController'>
+          <Select<statChoice>
+            options = {statOptions}
+            value = {statOptions.find(x=>x.value === selectedStat)}
+            onChange = {(picked)=>picked ? changeStat(picked.value) : console.log('No option selected')}
+            className = 'stat select'
+            isSearchable = {false}
+            isClearable = {false}
+            getOptionLabel = {(option)=>option.label}
+            getOptionValue = {(option)=>option.value}
+            styles={{
+              control: (provided) => ({...provided, padding: '5px 0px'}),
+              valueContainer: (provided) => ({...provided, marginTop: 'auto'}),
+            }}
+            components={{
+              Control: (props) => <Control {...props} title="Stat Type" />,
+            }}
+            />
         </div>
       </div>
     </div>
