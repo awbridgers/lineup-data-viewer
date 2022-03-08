@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/awbridgers.github.io/lineup-data-viewer/static/css/main.0aea99ed.css",
+    "main.js": "/awbridgers.github.io/lineup-data-viewer/static/js/main.e874e470.js",
+    "static/js/787.37e5b032.chunk.js": "/awbridgers.github.io/lineup-data-viewer/static/js/787.37e5b032.chunk.js",
+    "index.html": "/awbridgers.github.io/lineup-data-viewer/index.html",
+    "main.0aea99ed.css.map": "/awbridgers.github.io/lineup-data-viewer/static/css/main.0aea99ed.css.map",
+    "main.e874e470.js.map": "/awbridgers.github.io/lineup-data-viewer/static/js/main.e874e470.js.map",
+    "787.37e5b032.chunk.js.map": "/awbridgers.github.io/lineup-data-viewer/static/js/787.37e5b032.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0aea99ed.css",
+    "static/js/main.e874e470.js"
+  ]
+}
