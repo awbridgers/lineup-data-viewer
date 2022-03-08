@@ -64,25 +64,31 @@ export class Lineup {
       }
     });
   };
-  get totalShots(){
+  get totalShots() {
     return {
       attemptedFor: this.attemptedThreesFor + this.attemptedTwosFor,
       attemptedAgainst: this.attemptedThreesAgainst + this.attemptedTwosAgainst,
       madeFor: this.madeTwosFor + this.madeThreesFor,
-      madeAgainst: this.madeTwosAgainst + this.madeThreesAgainst
-    }
+      madeAgainst: this.madeTwosAgainst + this.madeThreesAgainst,
+    };
   }
-  get twoPercentFor(){
-    return this.madeTwosFor/this.attemptedTwosFor
+  get fgPercentFor() {
+    return this.totalShots.madeFor / this.totalShots.attemptedFor;
   }
-  get twoPercentAgainst(){
-    return this.madeTwosAgainst/this.attemptedTwosAgainst
+  get fgPercentAgainst() {
+    return this.totalShots.madeAgainst / this.totalShots.attemptedAgainst;
   }
-  get threePercentFor(){
-    return this.madeThreesFor/this.attemptedThreesFor
+  get twoPercentFor() {
+    return this.madeTwosFor / this.attemptedTwosFor;
   }
-  get threePercentAgainst(){
-    return this.madeThreesAgainst/this.attemptedThreesAgainst
+  get twoPercentAgainst() {
+    return this.madeTwosAgainst / this.attemptedTwosAgainst;
+  }
+  get threePercentFor() {
+    return this.madeThreesFor / this.attemptedThreesFor;
+  }
+  get threePercentAgainst() {
+    return this.madeThreesAgainst / this.attemptedThreesAgainst;
   }
   get netPoints() {
     return this.pointsFor - this.pointsAgainst;
@@ -93,73 +99,86 @@ export class Lineup {
   get netDRebounds() {
     return this.dRebFor - this.dRebAgainst;
   }
-  get netPaint(){
-    return this.paintFor - this.paintAgainst
+  get netPaint() {
+    return this.paintFor - this.paintAgainst;
   }
-  get netSecond(){
-    return this.secondFor - this.secondAgainst
+  get netSecond() {
+    return this.secondFor - this.secondAgainst;
   }
   get netAssists() {
-    return this.assistsFor - this.assistsAgainst
+    return this.assistsFor - this.assistsAgainst;
   }
-  get netTurnovers(){
-    return this.turnoversFor-this.turnoversAgainst
+  get netTurnovers() {
+    return this.turnoversFor - this.turnoversAgainst;
   }
-  get netAttemptedTwos(){
-    return this.attemptedTwosFor -  this.attemptedTwosAgainst
+  get netAttemptedTwos() {
+    return this.attemptedTwosFor - this.attemptedTwosAgainst;
   }
-  get netMadeTwos(){
-    return this.madeTwosFor -  this.madeTwosAgainst
+  get netMadeTwos() {
+    return this.madeTwosFor - this.madeTwosAgainst;
   }
-  get netAttemptedThrees(){
-    return this.attemptedThreesFor -  this.attemptedThreesAgainst
+  get netAttemptedThrees() {
+    return this.attemptedThreesFor - this.attemptedThreesAgainst;
   }
-  get netMadeThrees(){
-    return this.madeThreesFor -  this.madeThreesAgainst
+  get netMadeThrees() {
+    return this.madeThreesFor - this.madeThreesAgainst;
   }
-  get possessions(){
+  get possessions() {
     //FGA-OR + TO + .44*FTA
-    const {attemptedFor, attemptedAgainst} = this.totalShots
-    const possFor = attemptedFor - this.oRebFor + this.turnoversFor + (0.44*this.ftaFor);
-    const possAgainst = attemptedAgainst - this.oRebAgainst + this.turnoversAgainst + (0.44*this.ftaFor)
+    const {attemptedFor, attemptedAgainst} = this.totalShots;
+    const possFor =
+      attemptedFor - this.oRebFor + this.turnoversFor + 0.44 * this.ftaFor;
+    const possAgainst =
+      attemptedAgainst -
+      this.oRebAgainst +
+      this.turnoversAgainst +
+      0.44 * this.ftaFor;
     //because lineups can change between possessions, just average out the possessions of off and def.
-    return Math.ceil((possAgainst+possFor)/2)
+    return Math.ceil((possAgainst + possFor) / 2);
   }
-  get oRating(){
-    return Math.round((this.pointsFor/this.possessions) * 100)
+  get oRating() {
+    return Math.round((this.pointsFor / this.possessions) * 100);
   }
-  get dRating(){
-    return Math.round((this.pointsAgainst/this.possessions)*100)
+  get dRating() {
+    return Math.round((this.pointsAgainst / this.possessions) * 100);
   }
-  get threeAR(){
-    const{attemptedFor} = this.totalShots;
-    return Math.round((this.attemptedThreesFor/attemptedFor) * 100 )
+  get threeARFor() {
+    const {attemptedFor} = this.totalShots;
+    return (this.attemptedThreesFor / attemptedFor);
   }
-  get assistsPerPoss(){
-    return (this.assistsFor/this.possessions)
+  get threeARAgainst(){
+    const {attemptedAgainst} = this.totalShots;
+    return (this.attemptedThreesFor / attemptedAgainst);
   }
-  get turnoversPerPoss(){
-    return (this.turnoversFor/this.possessions)
+  get assistsPerPoss() {
+    return this.assistsFor / this.possessions;
   }
-  get eFG(){
-    const {attemptedFor, madeFor} = this.totalShots
-    return (madeFor + (0.5*this.madeThreesFor)) /attemptedFor
+  get turnoversPerPoss() {
+    return this.turnoversFor / this.possessions;
   }
-  get oRebPercent(){
+  get eFGFor() {
+    const {attemptedFor, madeFor} = this.totalShots;
+    return (madeFor + 0.5 * this.madeThreesFor) / attemptedFor;
+  }
+  get eFGAgainst(){
+    const {attemptedAgainst, madeAgainst} = this.totalShots;
+    return (madeAgainst + 0.5 * this.madeThreesAgainst) / attemptedAgainst;
+  }
+  get oRebPercent() {
     //Percent of missed shots that were O-rebounded by team.
     const {attemptedFor, madeFor} = this.totalShots;
-    return this.oRebFor/(attemptedFor-madeFor)
+    return this.oRebFor / (attemptedFor - madeFor);
   }
-  get dRebPercent(){
+  get dRebPercent() {
     //Percent of missed shots that were D-rebounded by team.
     const {attemptedAgainst, madeAgainst} = this.totalShots;
-    return this.dRebFor/(attemptedAgainst-madeAgainst)
+    return this.dRebFor / (attemptedAgainst - madeAgainst);
   }
-  get assistPerFG(){
-    const {madeFor}= this.totalShots;
-    return this.assistsFor/madeFor
+  get assistPerFG() {
+    const {madeFor} = this.totalShots;
+    return this.assistsFor / madeFor;
   }
-  get assistTurnoverRatio(){
-    return this.assistsFor/this.turnoversFor
+  get assistTurnoverRatio() {
+    return this.assistsFor / this.turnoversFor;
   }
 }

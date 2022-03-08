@@ -60,7 +60,7 @@ const Table = ({data, type}: iProps) => {
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                   className="th"
                 >
-                  {column.id === 'players_placeholder_0' ? (
+                  {column.id === 'players_placeholder_0' && type === 'total' ? (
                     <CSVLink headers={csvHeaders} data={rows}>Download</CSVLink>
                   ) : (
                     column.render('Header')
@@ -138,10 +138,12 @@ const Styles = styled.div`
       }
     }
     .tfoot {
+      position: sticky;
+      bottom:0;
       .tr {
         background: #42444e;
         color: #fff;
-        min-height: 100px;
+        min-height: 50px;
       }
     }
   }
@@ -195,6 +197,9 @@ const Styles = styled.div`
       justify-content: center;
       font-size: 14px;
       font-weight: bold;
+      a{
+        color: white;
+      }
     }
   }
 `;

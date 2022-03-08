@@ -768,11 +768,12 @@ export const advanced: Array<Column<Lineup>> = [
       const total = useMemo(
         () =>
           info.rows.reduce(
-            (prev, current) => prev + current.values.possessions
+            (prev, current) => prev + current.values.possessions,
+            0
           ),
         [info.rows]
       );
-      return <>FIX</>;
+      return <>{total}</>;
     },
   },
   {
@@ -781,12 +782,18 @@ export const advanced: Array<Column<Lineup>> = [
     disableSortBy: true,
     sortDescFirst: true,
     Footer: (info) => {
-      const total = useMemo(
-        () =>
-          info.rows.reduce((prev, current) => prev + current.values.oRating),
-        [info.rows]
-      );
-      return <>FIX</>;
+      const total = useMemo(() => {
+        const poss = info.rows.reduce(
+          (prev, current) => prev + current.original.possessions,
+          0
+        );
+        const points = info.rows.reduce(
+          (prev, current) => prev + current.original.pointsFor,
+          0
+        );
+        return Math.round((points / poss) * 100);
+      }, [info.rows]);
+      return <>{total}</>;
     },
   },
   {
@@ -795,29 +802,21 @@ export const advanced: Array<Column<Lineup>> = [
     disableSortBy: true,
     sortDescFirst: true,
     Footer: (info) => {
-      const total = useMemo(
-        () =>
-          info.rows.reduce((prev, current) => prev + current.values.dRating),
-        [info.rows]
-      );
-      return <>FIX</>;
+      const total = useMemo(() => {
+        const poss = info.rows.reduce(
+          (prev, current) => prev + current.original.possessions,
+          0
+        );
+        const points = info.rows.reduce(
+          (prev, current) => prev + current.original.pointsAgainst,
+          0
+        );
+        return Math.round((points / poss) * 100);
+      }, [info.rows]);
+      return <>{total}</>;
     },
   },
-  {
-    Header: 'eFG%',
-    accessor: 'eFG',
-    disableSortBy: true,
-    Cell: ({value}) => value.toFixed(2),
-    sortDescFirst: true,
-    Footer: (info) => {
-      const total = useMemo(
-        () =>
-          info.rows.reduce((prev, current) => prev + current.values.dRating),
-        [info.rows]
-      );
-      return <>FIX</>;
-    },
-  },
+
   {
     Header: 'ORB%',
     accessor: 'oRebPercent',
@@ -825,12 +824,18 @@ export const advanced: Array<Column<Lineup>> = [
     Cell: ({value}) => value.toFixed(2),
     sortDescFirst: true,
     Footer: (info) => {
-      const total = useMemo(
-        () =>
-          info.rows.reduce((prev, current) => prev + current.values.dRating),
-        [info.rows]
-      );
-      return <>FIX</>;
+      const total = useMemo(() => {
+        const missedShots = info.rows.reduce((prev, current) => {
+          const {madeFor, attemptedFor} = current.original.totalShots;
+          return prev + (attemptedFor - madeFor);
+        }, 0);
+        const oReb = info.rows.reduce(
+          (prev, current) => prev + current.original.oRebFor,
+          0
+        );
+        return oReb / missedShots;
+      }, [info.rows]);
+      return <>{total.toFixed(2)}</>;
     },
   },
   {
@@ -840,40 +845,39 @@ export const advanced: Array<Column<Lineup>> = [
     Cell: ({value}) => value.toFixed(2),
     sortDescFirst: true,
     Footer: (info) => {
-      const total = useMemo(
-        () =>
-          info.rows.reduce((prev, current) => prev + current.values.dRating),
-        [info.rows]
-      );
-      return <>FIX</>;
+      const total = useMemo(() => {
+        const missedShots = info.rows.reduce((prev, current) => {
+          const {madeAgainst, attemptedAgainst} = current.original.totalShots;
+          return prev + (attemptedAgainst - madeAgainst);
+        }, 0);
+        const dReb = info.rows.reduce(
+          (prev, current) => prev + current.original.dRebFor,
+          0
+        );
+        return dReb / missedShots;
+      }, [info.rows]);
+      return <>{total.toFixed(2)}</>;
     },
   },
-  {
-    Header: 'A/TO',
-    accessor: 'assistTurnoverRatio',
-    Cell: ({value}) => value.toFixed(2),
-    sortDescFirst: true,
-    Footer: (info) => {
-      const total = useMemo(
-        () =>
-          info.rows.reduce((prev, current) => prev + current.values.dRating),
-        [info.rows]
-      );
-      return <>FIX</>;
-    },
-  },
+
   {
     Header: 'AST %',
     accessor: 'assistPerFG',
     Cell: ({value}) => value.toFixed(2),
     sortDescFirst: true,
     Footer: (info) => {
-      const total = useMemo(
-        () =>
-          info.rows.reduce((prev, current) => prev + current.values.dRating),
-        [info.rows]
-      );
-      return <>FIX</>;
+      const total = useMemo(() => {
+        const assists = info.rows.reduce(
+          (prev, current) => prev + current.original.assistsFor,
+          0
+        );
+        const madeShots = info.rows.reduce(
+          (prev, current) => prev + current.original.totalShots.madeFor,
+          0
+        );
+        return assists / madeShots;
+      }, [info.rows]);
+      return <>{total.toFixed(2)}</>;
     },
   },
   {
@@ -882,12 +886,38 @@ export const advanced: Array<Column<Lineup>> = [
     Cell: ({value}) => value.toFixed(2),
     sortDescFirst: true,
     Footer: (info) => {
-      const total = useMemo(
-        () =>
-          info.rows.reduce((prev, current) => prev + current.values.dRating),
-        [info.rows]
-      );
-      return <>FIX</>;
+      const total = useMemo(() => {
+        const assists = info.rows.reduce(
+          (prev, current) => prev + current.original.assistsFor,
+          0
+        );
+        const poss = info.rows.reduce(
+          (prev, current) => prev + current.original.possessions,
+          0
+        );
+        return assists / poss;
+      }, [info.rows]);
+      return <>{total.toFixed(2)}</>;
+    },
+  },
+  {
+    Header: 'A/TO',
+    accessor: 'assistTurnoverRatio',
+    Cell: ({value}) => value.toFixed(2),
+    sortDescFirst: true,
+    Footer: (info) => {
+      const total = useMemo(() => {
+        const assists = info.rows.reduce(
+          (prev, current) => prev + current.original.assistsFor,
+          0
+        );
+        const turnovers = info.rows.reduce(
+          (prev, current) => prev + current.original.turnoversFor,
+          0
+        );
+        return assists / turnovers;
+      }, [info.rows]);
+      return <>{total.toFixed(2)}</>;
     },
   },
   {
@@ -896,25 +926,18 @@ export const advanced: Array<Column<Lineup>> = [
     Cell: ({value}) => value.toFixed(2),
     sortDescFirst: true,
     Footer: (info) => {
-      const total = useMemo(
-        () =>
-          info.rows.reduce((prev, current) => prev + current.values.dRating),
-        [info.rows]
-      );
-      return <>FIX</>;
-    },
-  },
-  {
-    Header: '3AR',
-    accessor: 'threeAR',
-    sortDescFirst: true,
-    Footer: (info) => {
-      const total = useMemo(
-        () =>
-          info.rows.reduce((prev, current) => prev + current.values.threeAr),
-        [info.rows]
-      );
-      return <>FIX</>;
+      const total = useMemo(() => {
+        const turnovers = info.rows.reduce(
+          (prev, current) => prev + current.original.turnoversFor,
+          0
+        );
+        const poss = info.rows.reduce(
+          (prev, current) => prev + current.original.possessions,
+          0
+        );
+        return turnovers / poss;
+      }, [info.rows]);
+      return <>{total.toFixed(2)}</>;
     },
   },
 ];
@@ -933,36 +956,448 @@ export const shooting: Array<Column<Lineup>> = [
       return <>Total ({total} lineups)</>;
     },
   },
+  {
+    Header: 'Team',
+    columns: [
+      {
+        Header: 'FGM',
+        accessor: (row) => row.totalShots.madeFor,
+        id: 'madeFor',
+        sortDescFirst: true,
+        Footer: (info) => {
+          const total = useMemo(
+            () =>
+              info.rows.reduce(
+                (prev, current) => prev + current.values.madeFor,
+                0
+              ),
+            [info.rows]
+          );
+          return <>{total}</>;
+        },
+      },
+      {
+        Header: 'FGA',
+        accessor: (row) => row.totalShots.attemptedFor,
+        id: 'attemptedFor',
+        sortDescFirst: true,
+        Footer: (info) => {
+          const total = useMemo(
+            () =>
+              info.rows.reduce(
+                (prev, current) => prev + current.values.attemptedFor,
+                0
+              ),
+            [info.rows]
+          );
+          return <>{total}</>;
+        },
+      },
+
+      {
+        Header: 'FG%',
+        accessor: 'fgPercentFor',
+        Cell: ({value}) => value.toFixed(2),
+        sortDescFirst: true,
+        Footer: (info) => {
+          const total = useMemo(() => {
+            const total = info.rows.reduce(
+              (prev, current) =>
+                prev + current.original.totalShots.attemptedFor,
+              0
+            );
+            const made = info.rows.reduce(
+              (prev, current) => prev + current.original.totalShots.madeFor,
+              0
+            );
+            return made/total
+          }, [info.rows]);
+          return <>{total.toFixed(2)}</>;
+        },
+      },
+      {
+        Header: '2PM',
+        accessor: 'madeTwosFor',
+
+        sortDescFirst: true,
+        Footer: (info) => {
+          const total = useMemo(
+            () =>
+              info.rows.reduce(
+                (prev, current) => prev + current.values.madeTwosFor,
+                0
+              ),
+            [info.rows]
+          );
+          return <>{total}</>;
+        },
+      },
+      {
+        Header: '2PA',
+        accessor: 'attemptedTwosFor',
+        sortDescFirst: true,
+        Footer: (info) => {
+          const total = useMemo(
+            () =>
+              info.rows.reduce(
+                (prev, current) => prev + current.values.attemptedTwosFor,
+                0
+              ),
+            [info.rows]
+          );
+          return <>{total}</>;
+        },
+      },
+
+      {
+        Header: '2P%',
+        accessor: 'twoPercentFor',
+        Cell: ({value}) => value.toFixed(2),
+        sortDescFirst: true,
+        Footer: (info) => {
+          const total = useMemo(
+            () =>{
+              const made = info.rows.reduce((prev, current)=>prev + current.original.madeTwosFor,0)
+              const shot = info.rows.reduce((prev, current)=>prev + current.original.attemptedTwosFor,0)
+              return made/shot
+            }
+              ,
+            [info.rows]
+          );
+          return <>{total.toFixed(2)}</>;
+        },
+      },
+      {
+        Header: '3PM',
+        accessor: 'madeThreesFor',
+        sortDescFirst: true,
+        Footer: (info) => {
+          const total = useMemo(
+            () =>
+              info.rows.reduce(
+                (prev, current) => prev + current.values.madeThreesFor,
+                0
+              ),
+            [info.rows]
+          );
+          return <>{total}</>;
+        },
+      },
+      {
+        Header: '3PA',
+        accessor: 'attemptedThreesFor',
+        sortDescFirst: true,
+        Footer: (info) => {
+          const total = useMemo(
+            () =>
+              info.rows.reduce(
+                (prev, current) => prev + current.values.attemptedThreesFor,
+                0
+              ),
+            [info.rows]
+          );
+          return <>{total}</>;
+        },
+      },
+      {
+        Header: '3P%',
+        accessor: 'threePercentFor',
+        sortDescFirst: true,
+        Cell: ({value}) => value.toFixed(2),
+        Footer: (info) => {
+          const total = useMemo(
+            () =>{
+              const made = info.rows.reduce((prev, current)=>prev + current.original.madeThreesFor,0)
+              const shot = info.rows.reduce((prev, current)=>prev + current.original.attemptedThreesFor,0)
+              return made/shot
+            }
+              ,
+            [info.rows]
+          );
+          return <>{total.toFixed(2)}</>;
+        },
+      },
+      {
+        Header: 'eFG%',
+        accessor: 'eFGFor',
+        disableSortBy: true,
+        Cell: ({value}) => value.toFixed(2),
+        sortDescFirst: true,
+        Footer: (info) => {
+          const total = useMemo(
+            () =>{
+              const shots = info.rows.reduce(
+                (prev, current) => prev + current.original.totalShots.attemptedFor,0
+              );
+              const threes = info.rows.reduce((prev,current)=>prev + current.original.madeThreesFor,0);
+              const makes = info.rows.reduce((prev,current)=>prev+current.original.totalShots.madeFor,0)
+              return (makes + (0.5*threes))/shots
+            },
+              
+            [info.rows]
+          );
+          return <>{total.toFixed(2)}</>;
+        },
+      },
+      {
+        Header: '3AR',
+        accessor: 'threeARFor',
+        sortDescFirst: true,
+        Cell: ({value})=>value.toFixed(2),
+        Footer: (info) => {
+          const total = useMemo(() => {
+            const threes = info.rows.reduce(
+              (prev, current) => prev + current.original.attemptedThreesFor,
+              0
+            );
+            const total = info.rows.reduce(
+              (prev, current) =>
+                prev + current.original.totalShots.attemptedFor,
+              0
+            );
+            return threes / total;
+          }, [info.rows]);
+          return <>{total.toFixed(2)}</>;
+        },
+      },
+    ],
+  },
+  {
+    Header: 'Opponent',
+    columns: [
+      {
+        Header: 'FGM',
+        accessor: (row) => row.totalShots.madeAgainst,
+        id: 'madeAgainst',
+        sortDescFirst: true,
+        Footer: (info) => {
+          const total = useMemo(
+            () =>
+              info.rows.reduce(
+                (prev, current) => prev + current.values.madeAgainst,
+                0
+              ),
+            [info.rows]
+          );
+          return <>{total}</>;
+        },
+      },
+      {
+        Header: 'FGA',
+        accessor: (row) => row.totalShots.attemptedAgainst,
+        id: 'attemptedAgainst',
+        sortDescFirst: true,
+        Footer: (info) => {
+          const total = useMemo(
+            () =>
+              info.rows.reduce(
+                (prev, current) => prev + current.values.attemptedAgainst,
+                0
+              ),
+            [info.rows]
+          );
+          return <>{total}</>;
+        },
+      },
+
+      {
+        Header: 'FG%',
+        accessor: 'fgPercentAgainst',
+        Cell: ({value}) => value.toFixed(2),
+        sortDescFirst: true,
+        Footer: (info) => {
+          const total = useMemo(() => {
+            const total = info.rows.reduce(
+              (prev, current) =>
+                prev + current.original.totalShots.attemptedAgainst,
+              0
+            );
+            const made = info.rows.reduce(
+              (prev, current) => prev + current.original.totalShots.madeAgainst,
+              0
+            );
+            return made/total
+          }, [info.rows]);
+          return <>{total.toFixed(2)}</>;
+        },
+      },
+      {
+        Header: '2PM',
+        accessor: 'madeTwosAgainst',
+
+        sortDescFirst: true,
+        Footer: (info) => {
+          const total = useMemo(
+            () =>
+              info.rows.reduce(
+                (prev, current) => prev + current.values.madeTwosAgainst,
+                0
+              ),
+            [info.rows]
+          );
+          return <>{total}</>;
+        },
+      },
+      {
+        Header: '2PA',
+        accessor: 'attemptedTwosAgainst',
+        sortDescFirst: true,
+        Footer: (info) => {
+          const total = useMemo(
+            () =>
+              info.rows.reduce(
+                (prev, current) => prev + current.values.attemptedTwosAgainst,
+                0
+              ),
+            [info.rows]
+          );
+          return <>{total}</>;
+        },
+      },
+
+      {
+        Header: '2P%',
+        accessor: 'twoPercentAgainst',
+        Cell: ({value}) => value.toFixed(2),
+        sortDescFirst: true,
+        Footer: (info) => {
+          const total = useMemo(
+            () =>{
+              const made = info.rows.reduce((prev, current)=>prev + current.original.madeTwosAgainst,0)
+              const shot = info.rows.reduce((prev, current)=>prev + current.original.attemptedTwosAgainst,0)
+              return made/shot
+            }
+              ,
+            [info.rows]
+          );
+          return <>{total.toFixed(2)}</>;
+        },
+      },
+      {
+        Header: '3PM',
+        accessor: 'madeThreesAgainst',
+        sortDescFirst: true,
+        Footer: (info) => {
+          const total = useMemo(
+            () =>
+              info.rows.reduce(
+                (prev, current) => prev + current.values.madeThreesAgainst,
+                0
+              ),
+            [info.rows]
+          );
+          return <>{total}</>;
+        },
+      },
+      {
+        Header: '3PA',
+        accessor: 'attemptedThreesAgainst',
+        sortDescFirst: true,
+        Footer: (info) => {
+          const total = useMemo(
+            () =>
+              info.rows.reduce(
+                (prev, current) => prev + current.values.attemptedThreesAgainst,
+                0
+              ),
+            [info.rows]
+          );
+          return <>{total}</>;
+        },
+      },
+      {
+        Header: '3P%',
+        accessor: 'threePercentAgainst',
+        sortDescFirst: true,
+        Cell: ({value}) => value.toFixed(2),
+        Footer: (info) => {
+          const total = useMemo(
+            () =>{
+              const made = info.rows.reduce((prev, current)=>prev + current.original.madeThreesAgainst,0)
+              const shot = info.rows.reduce((prev, current)=>prev + current.original.attemptedThreesAgainst,0)
+              return made/shot
+            }
+              ,
+            [info.rows]
+          );
+          return <>{total.toFixed(2)}</>;
+        },
+      },
+      {
+        Header: 'eFG%',
+        accessor: 'eFGAgainst',
+        disableSortBy: true,
+        Cell: ({value}) => value.toFixed(2),
+        sortDescFirst: true,
+        Footer: (info) => {
+          const total = useMemo(
+            () =>{
+              const shots = info.rows.reduce(
+                (prev, current) => prev + current.original.totalShots.attemptedAgainst,0
+              );
+              const threes = info.rows.reduce((prev,current)=>prev + current.original.madeThreesAgainst,0);
+              const makes = info.rows.reduce((prev,current)=>prev+current.original.totalShots.madeAgainst,0)
+              return (makes + (0.5*threes))/shots
+            },
+              
+            [info.rows]
+          );
+          return <>{total.toFixed(2)}</>;
+        },
+      },
+      {
+        Header: '3AR',
+        accessor: 'threeARAgainst',
+        sortDescFirst: true,
+        Cell:({value})=>value.toFixed(2),
+        Footer: (info) => {
+          const total = useMemo(() => {
+            const threes = info.rows.reduce(
+              (prev, current) => prev + current.original.attemptedThreesAgainst,
+              0
+            );
+            const total = info.rows.reduce(
+              (prev, current) =>
+                prev + current.original.totalShots.attemptedAgainst,
+              0
+            );
+            return threes / total;
+          }, [info.rows]);
+          return <>{total.toFixed(2)}</>;
+        },
+      },
+    ],
+  },
 ];
 
 export const csvHeaders = [
-  {label: 'players', key:'values.players'},
-  {label: 'time (s)', key:'values.time'},
-  {label: 'TEAM', key:''},
-  {label: 'Pts', key:'values.pointsFor'},
-  {label: 'Drb', key:'values.dRebFor'},
-  {label: 'Orb', key:'values.oRebFor'},
-  {label: 'FGM', key:'values.madeFor'},
-  {label: 'FGA', key:'values.attemptedFor'},
-  {label: '2-PM', key:'values.madeTwosFor'},
-  {label: '2-PA', key:'values.attemptedTwosFor'},
-  {label: '3-PM', key:'values.madeThreesFor'},
-  {label: '3-PA', key:'values.attemptedThreesFor'},
-  {label: 'Paint', key:'values.paintFor'},
-  {label: '2nd Chance', key:'values.secondFor'},
-  {label: 'Ast', key:'values.assistsFor'},
-  {label: 'TO', key:'values.turnoversFor'},
-  {label: 'Pts', key:'values.pointsAgainst'},
-  {label: 'Drb', key:'values.dRebAgainst'},
-  {label: 'Orb', key:'values.oRebAgainst'},
-  {label: 'FGM', key:'values.madeAgainst'},
-  {label: 'FGA', key:'values.attemptedAgainst'},
-  {label: '2PM', key:'values.madeTwosAgainst'},
-  {label: '2PA', key:'values.attemptedTwosAgainst'},
-  {label: '3-PM', key:'values.madeThreesAgainst'},
-  {label: '3-PA', key:'values.attemptedThreesAgainst'},
-  {label: 'Paint', key:'values.paintAgainst'},
-  {label: '2nd Chance', key:'values.secondAgainst'},
-  {label: 'Ast', key:'values.assistsAgainst'},
-  {label: 'TO', key:'values.turnoversAgainst'},
-]
+  {label: 'players', key: 'values.players'},
+  {label: 'time (s)', key: 'values.time'},
+  {label: 'TEAM', key: ''},
+  {label: 'Pts', key: 'values.pointsFor'},
+  {label: 'Drb', key: 'values.dRebFor'},
+  {label: 'Orb', key: 'values.oRebFor'},
+  {label: 'FGM', key: 'values.madeFor'},
+  {label: 'FGA', key: 'values.attemptedFor'},
+  {label: '2-PM', key: 'values.madeTwosFor'},
+  {label: '2-PA', key: 'values.attemptedTwosFor'},
+  {label: '3-PM', key: 'values.madeThreesFor'},
+  {label: '3-PA', key: 'values.attemptedThreesFor'},
+  {label: 'Paint', key: 'values.paintFor'},
+  {label: '2nd Chance', key: 'values.secondFor'},
+  {label: 'Ast', key: 'values.assistsFor'},
+  {label: 'TO', key: 'values.turnoversFor'},
+  {label: 'Pts', key: 'values.pointsAgainst'},
+  {label: 'Drb', key: 'values.dRebAgainst'},
+  {label: 'Orb', key: 'values.oRebAgainst'},
+  {label: 'FGM', key: 'values.madeAgainst'},
+  {label: 'FGA', key: 'values.attemptedAgainst'},
+  {label: '2PM', key: 'values.madeTwosAgainst'},
+  {label: '2PA', key: 'values.attemptedTwosAgainst'},
+  {label: '3-PM', key: 'values.madeThreesAgainst'},
+  {label: '3-PA', key: 'values.attemptedThreesAgainst'},
+  {label: 'Paint', key: 'values.paintAgainst'},
+  {label: '2nd Chance', key: 'values.secondAgainst'},
+  {label: 'Ast', key: 'values.assistsAgainst'},
+  {label: 'TO', key: 'values.turnoversAgainst'},
+];

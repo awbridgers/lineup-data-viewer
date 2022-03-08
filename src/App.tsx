@@ -16,16 +16,21 @@ const App = () => {
   const [selectedYear, setSelectedYear] = useState<string>('current');
   //games are order 0-32 so using -2 for season and -1 for conference totals
   const [selectedGame, setSelectedGame] = useState<number>(-2);
-  const [selectedStat, setSelectedStat] = useState<string>('total')
+  const [selectedStat, setSelectedStat] = useState<string>('total');
   const data = useContext(FirebaseContext);
-  const changeYear = (year:string)=>{
+  const changeYear = (year: string) => {
     setSelectedGame(-2);
-    setSelectedYear(year)
-  }
+    setSelectedYear(year);
+  };
   useEffect(() => {
     if (data) {
       const year = data[selectedYear];
-      const unsorted = selectedGame === -2 ? year.season : selectedGame === -1 ? year.conference : year.games[selectedGame].lineups
+      const unsorted =
+        selectedGame === -2
+          ? year.season
+          : selectedGame === -1
+          ? year.conference
+          : year.games[selectedGame].lineups;
       const sorted = unsorted.sort((a, b) => b.time - a.time);
       setSortedData(sorted);
     }
@@ -37,15 +42,15 @@ const App = () => {
     <div className="App">
       <Header
         selectedYear={selectedYear}
-        selectedGame = {selectedGame}
-        selectedStat = {selectedStat}
+        selectedGame={selectedGame}
+        selectedStat={selectedStat}
         games={data[selectedYear].games}
         years={Object.keys(data)}
-        changeYear = {changeYear}
-        changeGame = {setSelectedGame}
-        changeStat = {setSelectedStat}
+        changeYear={changeYear}
+        changeGame={setSelectedGame}
+        changeStat={setSelectedStat}
       />
-      <Table data = {sortedData} type = {selectedStat}/>
+      <Table data={sortedData} type={selectedStat} />
     </div>
   );
 };
