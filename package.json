@@ -1,6 +1,6 @@
 {
   "name": "lineup-data-viewer",
-  "homepage": "awbridgers.github.io/lineup-data-viewer",
+  "homepage": "https://awbridgers.github.io/lineup-data-viewer",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

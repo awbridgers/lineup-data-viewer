@@ -3,7 +3,7 @@ import firebase from '../firebaseConfig';
 import {createContext, ReactNode, useEffect, useState} from 'react';
 import { Lineup } from '../lineupClass';
 import { gameData, rawData, totalData } from '../types';
-import { parseData } from '../util/parseGames';
+import { parseData, parsePlayers } from '../util/parseGames';
 
 interface IProvider  {
   children: ReactNode
@@ -32,7 +32,8 @@ const FirebaseProvider = ({children}:IProvider) => {
         results[yearKey] = {
           games: gameArray.sort((a,b)=>a.order - b.order),
           season: parseData(gameArray, false),
-          conference: parseData(gameArray, true)
+          conference: parseData(gameArray, true),
+          player: parsePlayers(gameArray, false)
         }
       })
       setData(results)
