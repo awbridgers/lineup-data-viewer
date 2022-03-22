@@ -12,14 +12,19 @@ export interface gameData {
   }
   accGame: boolean;
   order: number;
-  lineups: Lineup[];
+  stats: gameStats;
   game: string
 };
 
+export interface gameStats{
+  lineups: Lineup[];
+  players: Lineup[];
+}
+
 export interface seasonData {
   games: gameData[];
-  season: Lineup[];
-  conference: Lineup[]
+  season: gameStats;
+  conference: gameStats;
 }
 
 export interface totalData {
