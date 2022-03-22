@@ -1,45 +1,60 @@
 import {getDatabase, ref, get} from 'firebase/database';
 import firebase from '../firebaseConfig';
 import {createContext, ReactNode, useEffect, useState} from 'react';
-import { Lineup } from '../lineupClass';
-import { gameData, rawData, totalData } from '../types';
-import { parseData, parsePlayers } from '../util/parseGames';
+import {Lineup} from '../lineupClass';
+import {gameData, rawData, totalData} from '../types';
+import {parseData, parsePlayers} from '../util/parseGames';
 
-interface IProvider  {
-  children: ReactNode
+interface IProvider {
+  children: ReactNode;
 }
 export const FirebaseContext = createContext<totalData | undefined>({});
 
-const FirebaseProvider = ({children}:IProvider) => {
-  const [data, setData] = useState<totalData>()
+const FirebaseProvider = ({children}: IProvider) => {
+  const [data, setData] = useState<totalData>();
   useEffect(() => {
     const fetchData = async () => {
       const db = getDatabase(firebase);
-      const lineupRef = ref(db,'lineupData');
+      const lineupRef = ref(db, 'lineupData');
       const data = await get(lineupRef);
-      let results: {[key:string] : any} = {};
-      data.forEach((year)=>{
-        const yearKey = year.key!
-        const gameArray:gameData[] = []
-        year.forEach((game)=>{
-          const lineups :Lineup[] = [];
-          game.child('lineups').forEach((lineup)=>{
-            const unit = {...lineup.val(), players: lineup.key}
-            lineups.push(new Lineup(unit))
-          })
-          gameArray.push({...game.val(), game: game.key!.replace(/_/g, ' '), lineups: lineups})
-        })
+      let results: {[key: string]: any} = {};
+      data.forEach((year) => {
+        const yearKey = year.key!;
+        const gameArray: gameData[] = [];
+        year.forEach((game) => {
+          const lineups: Lineup[] = [];
+          game.child('lineups').forEach((lineup) => {
+            if (lineup.key) {
+              const unit = new Lineup(lineup.key);
+              unit.combineLineup(lineup.val());
+              lineups.push(unit);
+            } else {
+              throw new Error('Problem in database with lineups');
+            }
+          });
+          gameArray.push({
+            score: game.val().score,
+            order: game.val().order,
+            accGame: game.val().accGame,
+            game: game.key!.replace(/_/g, ' '),
+            stats: {
+              lineups, players: parsePlayers(lineups)
+            }
+            
+          });
+        });
         results[yearKey] = {
-          games: gameArray.sort((a,b)=>a.order - b.order),
+          games: gameArray.sort((a, b) => a.order - b.order),
           season: parseData(gameArray, false),
           conference: parseData(gameArray, true),
-          player: parsePlayers(gameArray, false)
-        }
-      })
-      setData(results)
+        };
+      });
+      setData(results);
     };
     fetchData();
   }, []);
-  return <FirebaseContext.Provider value={data}>{children}</FirebaseContext.Provider>;
+  return (
+    <FirebaseContext.Provider value={data}>{children}</FirebaseContext.Provider>
+  );
 };
 export default FirebaseProvider;

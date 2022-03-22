@@ -1,9 +1,24 @@
 import {Lineup} from '../lineupClass';
 import {fixTime} from './fixTime';
-import {Column, useRowState} from 'react-table';
+import {Column, Row, useRowState} from 'react-table';
 import {useMemo} from 'react';
 
+interface SortProps {
+  rowA: Row<Lineup>;
+  rowB: Row<Lineup>;
+  id: string;
+}
+
 const format = new Intl.NumberFormat('en-us', {signDisplay: 'always'});
+const sortNumbers = (
+  rowA: Row<Lineup>,
+  rowB: Row<Lineup>,
+  id: string
+): number => {
+  const a = +rowA.values[id];
+  const b = +rowB.values[id];
+  return a > b ? 1 : a < b ? -1 : 0;
+};
 
 export const total: Array<Column<Lineup>> = [
   {
@@ -14,6 +29,7 @@ export const total: Array<Column<Lineup>> = [
     disableSortBy: true,
     width: 120,
     sortDescFirst: true,
+    sortType: sortNumbers,
     Footer: (info) => {
       const total = useMemo(() => info.rows.length, [info.rows]);
       return <>Total ({total} lineups)</>;
@@ -25,6 +41,7 @@ export const total: Array<Column<Lineup>> = [
     Cell: ({value}) => fixTime(value),
     width: 50,
     sortDescFirst: true,
+    sortType: sortNumbers,
     Footer: (info) => {
       const total = useMemo(
         () =>
@@ -37,12 +54,14 @@ export const total: Array<Column<Lineup>> = [
   {
     Header: 'Team',
     sortDescFirst: true,
+    sortType: sortNumbers,
     Footer: () => null,
     columns: [
       {
         Header: 'Pts',
         accessor: 'pointsFor',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -59,6 +78,7 @@ export const total: Array<Column<Lineup>> = [
         Header: 'DRb',
         accessor: 'dRebFor',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -75,6 +95,7 @@ export const total: Array<Column<Lineup>> = [
         Header: 'ORb',
         accessor: 'oRebFor',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -92,6 +113,7 @@ export const total: Array<Column<Lineup>> = [
         accessor: (row) => row.totalShots.madeFor,
         id: 'madeFor',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -109,6 +131,7 @@ export const total: Array<Column<Lineup>> = [
         accessor: (row) => row.totalShots.attemptedFor,
         id: 'attemptedFor',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -125,6 +148,7 @@ export const total: Array<Column<Lineup>> = [
         Header: '2PM',
         accessor: 'madeTwosFor',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -141,6 +165,7 @@ export const total: Array<Column<Lineup>> = [
         Header: '2PA',
         accessor: 'attemptedTwosFor',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -158,6 +183,7 @@ export const total: Array<Column<Lineup>> = [
         Header: '3PM',
         accessor: 'madeThreesFor',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -174,6 +200,7 @@ export const total: Array<Column<Lineup>> = [
         Header: '3PA',
         accessor: 'attemptedThreesFor',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -189,7 +216,7 @@ export const total: Array<Column<Lineup>> = [
       // {
       //   Header: '3P%',
       //   accessor: 'threePercentFor',
-      //   sortDescFirst: true,
+      //   sortDescFirst: true, sortType: sortNumbers,
       //   Cell: ({value}) => value.toFixed(2),
       //   Footer: (info) => {
       //     const total = useMemo(
@@ -207,6 +234,7 @@ export const total: Array<Column<Lineup>> = [
         Header: 'Pnt',
         accessor: 'paintFor',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -223,6 +251,7 @@ export const total: Array<Column<Lineup>> = [
         Header: '2nd',
         accessor: 'secondFor',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -239,6 +268,7 @@ export const total: Array<Column<Lineup>> = [
         Header: 'Ast',
         accessor: 'assistsFor',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -255,6 +285,7 @@ export const total: Array<Column<Lineup>> = [
         Header: 'TO',
         accessor: 'turnoversFor',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -272,12 +303,14 @@ export const total: Array<Column<Lineup>> = [
   {
     Header: 'Opponent',
     sortDescFirst: true,
+    sortType: sortNumbers,
     Footer: () => null,
     columns: [
       {
         Header: 'Pts',
         accessor: 'pointsAgainst',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -295,6 +328,7 @@ export const total: Array<Column<Lineup>> = [
         Header: 'DRb',
         accessor: 'dRebAgainst',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -311,6 +345,7 @@ export const total: Array<Column<Lineup>> = [
         Header: 'ORb',
         accessor: 'oRebAgainst',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -328,6 +363,7 @@ export const total: Array<Column<Lineup>> = [
         accessor: (row) => row.totalShots.madeAgainst,
         id: 'madeAgainst',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -345,6 +381,7 @@ export const total: Array<Column<Lineup>> = [
         accessor: (row) => row.totalShots.attemptedAgainst,
         id: 'attemptedAgainst',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -361,6 +398,7 @@ export const total: Array<Column<Lineup>> = [
         Header: '2PM',
         accessor: 'madeTwosAgainst',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -377,6 +415,7 @@ export const total: Array<Column<Lineup>> = [
         Header: '2PA',
         accessor: 'attemptedTwosAgainst',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -392,7 +431,7 @@ export const total: Array<Column<Lineup>> = [
       // {
       //   Header: '2P%',
       //   accessor: 'twoPercentAgainst',
-      //   sortDescFirst: true,
+      //   sortDescFirst: true, sortType: sortNumbers,
       //   Cell: ({value}) => value.toFixed(2),
       //   Footer: (info) => {
       //     const total = useMemo(
@@ -410,6 +449,7 @@ export const total: Array<Column<Lineup>> = [
         Header: '3PM',
         accessor: 'madeThreesAgainst',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -426,6 +466,7 @@ export const total: Array<Column<Lineup>> = [
         Header: '3PA',
         accessor: 'attemptedThreesAgainst',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -441,7 +482,7 @@ export const total: Array<Column<Lineup>> = [
       // {
       //   Header: '3P%',
       //   accessor: 'threePercentAgainst',
-      //   sortDescFirst: true,
+      //   sortDescFirst: true, sortType: sortNumbers,
       //   Cell: ({value}) => value.toFixed(2),
       //   Footer: (info) => {
       //     const total = useMemo(
@@ -460,6 +501,7 @@ export const total: Array<Column<Lineup>> = [
         Header: 'Pnt',
         accessor: 'paintAgainst',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -477,6 +519,7 @@ export const total: Array<Column<Lineup>> = [
         Header: '2nd',
         accessor: 'secondAgainst',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -494,6 +537,7 @@ export const total: Array<Column<Lineup>> = [
         Header: 'Ast',
         accessor: 'assistsAgainst',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -511,6 +555,7 @@ export const total: Array<Column<Lineup>> = [
         Header: 'TO',
         accessor: 'turnoversAgainst',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -536,6 +581,7 @@ export const net: Array<Column<Lineup>> = [
     width: 140,
     disableSortBy: true,
     sortDescFirst: true,
+    sortType: sortNumbers,
     Footer: (info) => {
       const number = useMemo(() => info.rows.length, [info.rows]);
       return <>Total ({number} lineups)</>;
@@ -547,6 +593,7 @@ export const net: Array<Column<Lineup>> = [
     Cell: ({value}) => fixTime(value),
     width: 60,
     sortDescFirst: true,
+    sortType: sortNumbers,
     Footer: (info) => {
       const total = useMemo(
         () =>
@@ -561,6 +608,7 @@ export const net: Array<Column<Lineup>> = [
     accessor: 'netPoints',
     Cell: ({value}) => format.format(value),
     sortDescFirst: true,
+    sortType: sortNumbers,
     Footer: (info) => {
       const total = useMemo(
         () =>
@@ -578,6 +626,8 @@ export const net: Array<Column<Lineup>> = [
     accessor: 'netDRebounds',
     Cell: ({value}) => format.format(value),
     sortDescFirst: true,
+    sortType: sortNumbers,
+
     Footer: (info) => {
       const total = useMemo(
         () =>
@@ -595,6 +645,8 @@ export const net: Array<Column<Lineup>> = [
     accessor: 'netORebounds',
     Cell: ({value}) => format.format(value),
     sortDescFirst: true,
+    sortType: sortNumbers,
+
     Footer: (info) => {
       const total = useMemo(
         () =>
@@ -612,6 +664,8 @@ export const net: Array<Column<Lineup>> = [
     accessor: 'netMadeTwos',
     Cell: ({value}) => format.format(value),
     sortDescFirst: true,
+    sortType: sortNumbers,
+
     Footer: (info) => {
       const total = useMemo(
         () =>
@@ -629,6 +683,8 @@ export const net: Array<Column<Lineup>> = [
     accessor: 'netAttemptedTwos',
     Cell: ({value}) => format.format(value),
     sortDescFirst: true,
+    sortType: sortNumbers,
+
     Footer: (info) => {
       const total = useMemo(
         () =>
@@ -646,6 +702,8 @@ export const net: Array<Column<Lineup>> = [
     accessor: 'netMadeThrees',
     Cell: ({value}) => format.format(value),
     sortDescFirst: true,
+    sortType: sortNumbers,
+
     Footer: (info) => {
       const total = useMemo(
         () =>
@@ -663,6 +721,8 @@ export const net: Array<Column<Lineup>> = [
     accessor: 'netAttemptedThrees',
     Cell: ({value}) => format.format(value),
     sortDescFirst: true,
+    sortType: sortNumbers,
+
     Footer: (info) => {
       const total = useMemo(
         () =>
@@ -680,6 +740,8 @@ export const net: Array<Column<Lineup>> = [
     accessor: 'netPaint',
     Cell: ({value}) => format.format(value),
     sortDescFirst: true,
+    sortType: sortNumbers,
+
     Footer: (info) => {
       const total = useMemo(
         () =>
@@ -697,6 +759,8 @@ export const net: Array<Column<Lineup>> = [
     accessor: 'netSecond',
     Cell: ({value}) => format.format(value),
     sortDescFirst: true,
+    sortType: sortNumbers,
+
     Footer: (info) => {
       const total = useMemo(
         () =>
@@ -714,6 +778,8 @@ export const net: Array<Column<Lineup>> = [
     accessor: 'netAssists',
     Cell: ({value}) => format.format(value),
     sortDescFirst: true,
+    sortType: sortNumbers,
+
     Footer: (info) => {
       const total = useMemo(
         () =>
@@ -731,6 +797,8 @@ export const net: Array<Column<Lineup>> = [
     accessor: 'netTurnovers',
     Cell: ({value}) => format.format(value),
     sortDescFirst: true,
+    sortType: sortNumbers,
+
     Footer: (info) => {
       const total = useMemo(
         () =>
@@ -754,6 +822,7 @@ export const advanced: Array<Column<Lineup>> = [
     disableSortBy: true,
     width: 140,
     sortDescFirst: true,
+    sortType: sortNumbers,
     Footer: (info) => {
       const total = useMemo(() => info.rows.length, [info.rows]);
       return <>Total ({total} lineups)</>;
@@ -764,6 +833,7 @@ export const advanced: Array<Column<Lineup>> = [
     accessor: 'possessions',
     disableSortBy: true,
     sortDescFirst: true,
+    sortType: sortNumbers,
     Footer: (info) => {
       const total = useMemo(
         () =>
@@ -781,6 +851,7 @@ export const advanced: Array<Column<Lineup>> = [
     accessor: 'oRating',
     disableSortBy: true,
     sortDescFirst: true,
+    sortType: sortNumbers,
     Footer: (info) => {
       const total = useMemo(() => {
         const poss = info.rows.reduce(
@@ -801,6 +872,7 @@ export const advanced: Array<Column<Lineup>> = [
     accessor: 'dRating',
     disableSortBy: true,
     sortDescFirst: true,
+    sortType: sortNumbers,
     Footer: (info) => {
       const total = useMemo(() => {
         const poss = info.rows.reduce(
@@ -823,6 +895,7 @@ export const advanced: Array<Column<Lineup>> = [
     disableSortBy: true,
     Cell: ({value}) => value.toFixed(2),
     sortDescFirst: true,
+    sortType: sortNumbers,
     Footer: (info) => {
       const total = useMemo(() => {
         const missedShots = info.rows.reduce((prev, current) => {
@@ -844,6 +917,7 @@ export const advanced: Array<Column<Lineup>> = [
     disableSortBy: true,
     Cell: ({value}) => value.toFixed(2),
     sortDescFirst: true,
+    sortType: sortNumbers,
     Footer: (info) => {
       const total = useMemo(() => {
         const missedShots = info.rows.reduce((prev, current) => {
@@ -865,6 +939,7 @@ export const advanced: Array<Column<Lineup>> = [
     accessor: 'assistPerFG',
     Cell: ({value}) => value.toFixed(2),
     sortDescFirst: true,
+    sortType: sortNumbers,
     Footer: (info) => {
       const total = useMemo(() => {
         const assists = info.rows.reduce(
@@ -885,6 +960,7 @@ export const advanced: Array<Column<Lineup>> = [
     accessor: 'assistsPerPoss',
     Cell: ({value}) => value.toFixed(2),
     sortDescFirst: true,
+    sortType: sortNumbers,
     Footer: (info) => {
       const total = useMemo(() => {
         const assists = info.rows.reduce(
@@ -905,6 +981,7 @@ export const advanced: Array<Column<Lineup>> = [
     accessor: 'assistTurnoverRatio',
     Cell: ({value}) => value.toFixed(2),
     sortDescFirst: true,
+    sortType: sortNumbers,
     Footer: (info) => {
       const total = useMemo(() => {
         const assists = info.rows.reduce(
@@ -925,6 +1002,7 @@ export const advanced: Array<Column<Lineup>> = [
     accessor: 'turnoversPerPoss',
     Cell: ({value}) => value.toFixed(2),
     sortDescFirst: true,
+    sortType: sortNumbers,
     Footer: (info) => {
       const total = useMemo(() => {
         const turnovers = info.rows.reduce(
@@ -951,6 +1029,7 @@ export const shooting: Array<Column<Lineup>> = [
     disableSortBy: true,
     width: 150,
     sortDescFirst: true,
+    sortType: sortNumbers,
     Footer: (info) => {
       const total = useMemo(() => info.rows.length, [info.rows]);
       return <>Total ({total} lineups)</>;
@@ -964,6 +1043,7 @@ export const shooting: Array<Column<Lineup>> = [
         accessor: (row) => row.totalShots.madeFor,
         id: 'madeFor',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -981,6 +1061,7 @@ export const shooting: Array<Column<Lineup>> = [
         accessor: (row) => row.totalShots.attemptedFor,
         id: 'attemptedFor',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -999,6 +1080,7 @@ export const shooting: Array<Column<Lineup>> = [
         accessor: 'fgPercentFor',
         Cell: ({value}) => value.toFixed(2),
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(() => {
             const total = info.rows.reduce(
@@ -1010,7 +1092,7 @@ export const shooting: Array<Column<Lineup>> = [
               (prev, current) => prev + current.original.totalShots.madeFor,
               0
             );
-            return made/total
+            return made / total;
           }, [info.rows]);
           return <>{total.toFixed(2)}</>;
         },
@@ -1020,6 +1102,7 @@ export const shooting: Array<Column<Lineup>> = [
         accessor: 'madeTwosFor',
 
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -1036,6 +1119,7 @@ export const shooting: Array<Column<Lineup>> = [
         Header: '2PA',
         accessor: 'attemptedTwosFor',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -1054,16 +1138,19 @@ export const shooting: Array<Column<Lineup>> = [
         accessor: 'twoPercentFor',
         Cell: ({value}) => value.toFixed(2),
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
-          const total = useMemo(
-            () =>{
-              const made = info.rows.reduce((prev, current)=>prev + current.original.madeTwosFor,0)
-              const shot = info.rows.reduce((prev, current)=>prev + current.original.attemptedTwosFor,0)
-              return made/shot
-            }
-              ,
-            [info.rows]
-          );
+          const total = useMemo(() => {
+            const made = info.rows.reduce(
+              (prev, current) => prev + current.original.madeTwosFor,
+              0
+            );
+            const shot = info.rows.reduce(
+              (prev, current) => prev + current.original.attemptedTwosFor,
+              0
+            );
+            return made / shot;
+          }, [info.rows]);
           return <>{total.toFixed(2)}</>;
         },
       },
@@ -1071,6 +1158,7 @@ export const shooting: Array<Column<Lineup>> = [
         Header: '3PM',
         accessor: 'madeThreesFor',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -1087,6 +1175,7 @@ export const shooting: Array<Column<Lineup>> = [
         Header: '3PA',
         accessor: 'attemptedThreesFor',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -1103,39 +1192,46 @@ export const shooting: Array<Column<Lineup>> = [
         Header: '3P%',
         accessor: 'threePercentFor',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Cell: ({value}) => value.toFixed(2),
         Footer: (info) => {
-          const total = useMemo(
-            () =>{
-              const made = info.rows.reduce((prev, current)=>prev + current.original.madeThreesFor,0)
-              const shot = info.rows.reduce((prev, current)=>prev + current.original.attemptedThreesFor,0)
-              return made/shot
-            }
-              ,
-            [info.rows]
-          );
+          const total = useMemo(() => {
+            const made = info.rows.reduce(
+              (prev, current) => prev + current.original.madeThreesFor,
+              0
+            );
+            const shot = info.rows.reduce(
+              (prev, current) => prev + current.original.attemptedThreesFor,
+              0
+            );
+            return made / shot;
+          }, [info.rows]);
           return <>{total.toFixed(2)}</>;
         },
       },
       {
         Header: 'eFG%',
         accessor: 'eFGFor',
-        disableSortBy: true,
         Cell: ({value}) => value.toFixed(2),
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
-          const total = useMemo(
-            () =>{
-              const shots = info.rows.reduce(
-                (prev, current) => prev + current.original.totalShots.attemptedFor,0
-              );
-              const threes = info.rows.reduce((prev,current)=>prev + current.original.madeThreesFor,0);
-              const makes = info.rows.reduce((prev,current)=>prev+current.original.totalShots.madeFor,0)
-              return (makes + (0.5*threes))/shots
-            },
-              
-            [info.rows]
-          );
+          const total = useMemo(() => {
+            const shots = info.rows.reduce(
+              (prev, current) =>
+                prev + current.original.totalShots.attemptedFor,
+              0
+            );
+            const threes = info.rows.reduce(
+              (prev, current) => prev + current.original.madeThreesFor,
+              0
+            );
+            const makes = info.rows.reduce(
+              (prev, current) => prev + current.original.totalShots.madeFor,
+              0
+            );
+            return (makes + 0.5 * threes) / shots;
+          }, [info.rows]);
           return <>{total.toFixed(2)}</>;
         },
       },
@@ -1143,7 +1239,8 @@ export const shooting: Array<Column<Lineup>> = [
         Header: '3AR',
         accessor: 'threeARFor',
         sortDescFirst: true,
-        Cell: ({value})=>value.toFixed(2),
+        sortType: sortNumbers,
+        Cell: ({value}) => value.toFixed(2),
         Footer: (info) => {
           const total = useMemo(() => {
             const threes = info.rows.reduce(
@@ -1170,6 +1267,7 @@ export const shooting: Array<Column<Lineup>> = [
         accessor: (row) => row.totalShots.madeAgainst,
         id: 'madeAgainst',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -1187,6 +1285,7 @@ export const shooting: Array<Column<Lineup>> = [
         accessor: (row) => row.totalShots.attemptedAgainst,
         id: 'attemptedAgainst',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -1205,6 +1304,7 @@ export const shooting: Array<Column<Lineup>> = [
         accessor: 'fgPercentAgainst',
         Cell: ({value}) => value.toFixed(2),
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(() => {
             const total = info.rows.reduce(
@@ -1216,7 +1316,7 @@ export const shooting: Array<Column<Lineup>> = [
               (prev, current) => prev + current.original.totalShots.madeAgainst,
               0
             );
-            return made/total
+            return made / total;
           }, [info.rows]);
           return <>{total.toFixed(2)}</>;
         },
@@ -1226,6 +1326,7 @@ export const shooting: Array<Column<Lineup>> = [
         accessor: 'madeTwosAgainst',
 
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -1242,6 +1343,7 @@ export const shooting: Array<Column<Lineup>> = [
         Header: '2PA',
         accessor: 'attemptedTwosAgainst',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -1260,16 +1362,19 @@ export const shooting: Array<Column<Lineup>> = [
         accessor: 'twoPercentAgainst',
         Cell: ({value}) => value.toFixed(2),
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
-          const total = useMemo(
-            () =>{
-              const made = info.rows.reduce((prev, current)=>prev + current.original.madeTwosAgainst,0)
-              const shot = info.rows.reduce((prev, current)=>prev + current.original.attemptedTwosAgainst,0)
-              return made/shot
-            }
-              ,
-            [info.rows]
-          );
+          const total = useMemo(() => {
+            const made = info.rows.reduce(
+              (prev, current) => prev + current.original.madeTwosAgainst,
+              0
+            );
+            const shot = info.rows.reduce(
+              (prev, current) => prev + current.original.attemptedTwosAgainst,
+              0
+            );
+            return made / shot;
+          }, [info.rows]);
           return <>{total.toFixed(2)}</>;
         },
       },
@@ -1277,6 +1382,7 @@ export const shooting: Array<Column<Lineup>> = [
         Header: '3PM',
         accessor: 'madeThreesAgainst',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -1293,6 +1399,7 @@ export const shooting: Array<Column<Lineup>> = [
         Header: '3PA',
         accessor: 'attemptedThreesAgainst',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -1309,39 +1416,46 @@ export const shooting: Array<Column<Lineup>> = [
         Header: '3P%',
         accessor: 'threePercentAgainst',
         sortDescFirst: true,
+        sortType: sortNumbers,
         Cell: ({value}) => value.toFixed(2),
         Footer: (info) => {
-          const total = useMemo(
-            () =>{
-              const made = info.rows.reduce((prev, current)=>prev + current.original.madeThreesAgainst,0)
-              const shot = info.rows.reduce((prev, current)=>prev + current.original.attemptedThreesAgainst,0)
-              return made/shot
-            }
-              ,
-            [info.rows]
-          );
+          const total = useMemo(() => {
+            const made = info.rows.reduce(
+              (prev, current) => prev + current.original.madeThreesAgainst,
+              0
+            );
+            const shot = info.rows.reduce(
+              (prev, current) => prev + current.original.attemptedThreesAgainst,
+              0
+            );
+            return made / shot;
+          }, [info.rows]);
           return <>{total.toFixed(2)}</>;
         },
       },
       {
         Header: 'eFG%',
         accessor: 'eFGAgainst',
-        disableSortBy: true,
         Cell: ({value}) => value.toFixed(2),
         sortDescFirst: true,
+        sortType: sortNumbers,
         Footer: (info) => {
-          const total = useMemo(
-            () =>{
-              const shots = info.rows.reduce(
-                (prev, current) => prev + current.original.totalShots.attemptedAgainst,0
-              );
-              const threes = info.rows.reduce((prev,current)=>prev + current.original.madeThreesAgainst,0);
-              const makes = info.rows.reduce((prev,current)=>prev+current.original.totalShots.madeAgainst,0)
-              return (makes + (0.5*threes))/shots
-            },
-              
-            [info.rows]
-          );
+          const total = useMemo(() => {
+            const shots = info.rows.reduce(
+              (prev, current) =>
+                prev + current.original.totalShots.attemptedAgainst,
+              0
+            );
+            const threes = info.rows.reduce(
+              (prev, current) => prev + current.original.madeThreesAgainst,
+              0
+            );
+            const makes = info.rows.reduce(
+              (prev, current) => prev + current.original.totalShots.madeAgainst,
+              0
+            );
+            return (makes + 0.5 * threes) / shots;
+          }, [info.rows]);
           return <>{total.toFixed(2)}</>;
         },
       },
@@ -1349,7 +1463,8 @@ export const shooting: Array<Column<Lineup>> = [
         Header: '3AR',
         accessor: 'threeARAgainst',
         sortDescFirst: true,
-        Cell:({value})=>value.toFixed(2),
+        sortType: sortNumbers,
+        Cell: ({value}) => value.toFixed(2),
         Footer: (info) => {
           const total = useMemo(() => {
             const threes = info.rows.reduce(

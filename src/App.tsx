@@ -14,6 +14,7 @@ const App = () => {
   //state variables
   const [sortedData, setSortedData] = useState<Lineup[]>([]);
   const [selectedYear, setSelectedYear] = useState<string>('current');
+  const [showPlayers, setShowPlayers] = useState<boolean>(false)
   //games are order 0-32 so using -2 for season and -1 for conference totals
   const [selectedGame, setSelectedGame] = useState<number>(-2);
   const [selectedStat, setSelectedStat] = useState<string>('total');
@@ -23,18 +24,19 @@ const App = () => {
     setSelectedYear(year);
   };
   useEffect(() => {
+    const playerOrTeam = showPlayers ? 'players' : 'lineups'
     if (data) {
       const year = data[selectedYear];
       const unsorted =
         selectedGame === -2
-          ? year.season
+          ? year.season[playerOrTeam]
           : selectedGame === -1
-          ? year.conference
-          : year.games[selectedGame].lineups;
+          ? year.conference[playerOrTeam]
+          : year.games[selectedGame].stats[playerOrTeam];
       const sorted = unsorted.sort((a, b) => b.time - a.time);
       setSortedData(sorted);
     }
-  }, [data, selectedGame, selectedYear]);
+  }, [data, selectedGame, selectedYear, showPlayers]);
   if (!data) {
     return <div>Loading...</div>;
   }
@@ -49,6 +51,8 @@ const App = () => {
         changeYear={changeYear}
         changeGame={setSelectedGame}
         changeStat={setSelectedStat}
+        showPlayers={showPlayers}
+        changeShowPlayers={setShowPlayers}
       />
       <Table data={sortedData} type={selectedStat} />
     </div>

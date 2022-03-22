@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import Select, {components} from 'react-select';
 import {gameData, seasonData} from '../types';
+import Switch from 'react-switch';
 import '../App.css';
 import {Lineup} from '../lineupClass';
 
@@ -10,9 +11,11 @@ interface iProps {
   selectedYear: string;
   selectedGame: number;
   selectedStat: string;
+  showPlayers: boolean;
   changeYear: (picked: string) => void;
   changeGame: (picked: number) => void;
-  changeStat: (picked: string)=>void;
+  changeStat: (picked: string) => void;
+  changeShowPlayers: (checked: boolean) => void;
 }
 interface gameChoice {
   label: string;
@@ -24,25 +27,27 @@ interface yearChoice {
 }
 interface statChoice {
   label: string;
-  value: 'total' | 'net' | 'advanced' | 'shooting'
+  value: 'total' | 'net' | 'advanced' | 'shooting';
 }
 
-const statOptions: statChoice[] = [{
-  label: 'Total',
-  value: 'total'
-},
-{
-  label: 'Net',
-  value: 'net'
-},
-{
-  label: 'Advanced',
-  value: 'advanced'
-},
-{
-  label: 'Shooting',
-  value: 'shooting'
-}]
+const statOptions: statChoice[] = [
+  {
+    label: 'Total',
+    value: 'total',
+  },
+  {
+    label: 'Net',
+    value: 'net',
+  },
+  {
+    label: 'Advanced',
+    value: 'advanced',
+  },
+  {
+    label: 'Shooting',
+    value: 'shooting',
+  },
+];
 
 //custom control compononet for select
 const Control = (props: any) => {
@@ -57,12 +62,14 @@ const Control = (props: any) => {
 const Header = ({
   games,
   years,
+  showPlayers,
   selectedGame,
   selectedYear,
   changeGame,
   changeYear,
   selectedStat,
-  changeStat
+  changeStat,
+  changeShowPlayers,
 }: iProps) => {
   const [gameOptions, setGameOptions] = useState<gameChoice[]>([]);
   const [yearOptions, setyearOptions] = useState<yearChoice[]>([]);
@@ -97,7 +104,11 @@ const Header = ({
         <div className="selectContainer">
           <Select
             options={yearOptions}
-            onChange={(picked) => picked ? changeYear(picked.value) : console.log('no option selected')}
+            onChange={(picked) =>
+              picked
+                ? changeYear(picked.value)
+                : console.log('no option selected')
+            }
             isClearable={false}
             value={yearOptions.find((x) => x.value === selectedYear)}
             getOptionLabel={(option) => option.label}
@@ -133,7 +144,11 @@ const Header = ({
           <Select<gameChoice>
             options={gameOptions}
             value={gameOptions.find((x) => x.value === selectedGame)}
-            onChange={(picked) => picked ? changeGame(picked.value) : console.log('No option selected')}
+            onChange={(picked) =>
+              picked
+                ? changeGame(picked.value)
+                : console.log('No option selected')
+            }
             className="game select"
             isSearchable={false}
             isClearable={false}
@@ -149,17 +164,21 @@ const Header = ({
           />
         </div>
       </div>
-      <div className = 'headerStatControls'>
-        <div className= 'selectController'>
+      <div className="headerStatControls">
+        <div className="selectController">
           <Select<statChoice>
-            options = {statOptions}
-            value = {statOptions.find(x=>x.value === selectedStat)}
-            onChange = {(picked)=>picked ? changeStat(picked.value) : console.log('No option selected')}
-            className = 'stat select'
-            isSearchable = {false}
-            isClearable = {false}
-            getOptionLabel = {(option)=>option.label}
-            getOptionValue = {(option)=>option.value}
+            options={statOptions}
+            value={statOptions.find((x) => x.value === selectedStat)}
+            onChange={(picked) =>
+              picked
+                ? changeStat(picked.value)
+                : console.log('No option selected')
+            }
+            className="stat select"
+            isSearchable={false}
+            isClearable={false}
+            getOptionLabel={(option) => option.label}
+            getOptionValue={(option) => option.value}
             styles={{
               control: (provided) => ({...provided, padding: '5px 0px'}),
               valueContainer: (provided) => ({...provided, marginTop: 'auto'}),
@@ -167,7 +186,10 @@ const Header = ({
             components={{
               Control: (props) => <Control {...props} title="Stat Type" />,
             }}
-            />
+          />
+        </div>
+        <div className="playerSwitch">
+          <button onClick = {()=>changeShowPlayers(!showPlayers)}>{showPlayers ? 'Show Team' : 'Show Players'}</button>
         </div>
       </div>
     </div>
