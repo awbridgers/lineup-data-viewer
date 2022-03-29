@@ -12,9 +12,11 @@ interface iProps {
   selectedGame: number;
   selectedStat: string;
   showPlayers: boolean;
+  showFinder: boolean;
   changeYear: (picked: string) => void;
   changeGame: (picked: number) => void;
   changeStat: (picked: string) => void;
+  changeShowFinder: (bool:boolean)=>void;
   changeShowPlayers: (checked: boolean) => void;
 }
 interface gameChoice {
@@ -65,11 +67,13 @@ const Header = ({
   showPlayers,
   selectedGame,
   selectedYear,
+  showFinder,
   changeGame,
   changeYear,
   selectedStat,
   changeStat,
   changeShowPlayers,
+  changeShowFinder
 }: iProps) => {
   const [gameOptions, setGameOptions] = useState<gameChoice[]>([]);
   const [yearOptions, setyearOptions] = useState<yearChoice[]>([]);
@@ -123,6 +127,9 @@ const Header = ({
               Control: (props) => <Control {...props} title="Season" />,
             }}
           />
+        </div>
+        <div className = 'headerFinder'>
+          <button onClick = {()=>changeShowFinder(true)}>Lineup Finder</button>
         </div>
       </div>
       <div className="headerGameControls">

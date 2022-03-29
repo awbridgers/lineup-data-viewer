@@ -23,21 +23,21 @@ body {
   min-height: 130px;
   flex-grow: 1;
 }
-.headerStatControls{
+.headerStatControls, .headerYearControls{
   align-items: center;
   justify-content: space-around;
   display: flex;
   flex-flow: column nowrap;
   min-height:130px;
 }
-.playerSwitch button{
+.playerSwitch button, .headerFinder button{
   width: 125px;
   height: 40px;
   border-radius: 6px;
   font-weight: 600;
   font-size: 16px;
 }
-.playerSwitch button:hover{
+.playerSwitch button:hover, .headerFinder button:hover{
   background-color: #808080;
 }
 .gameInfo {
