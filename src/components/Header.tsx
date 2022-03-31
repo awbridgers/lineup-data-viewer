@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import Select, {components} from 'react-select';
 import {gameData, seasonData} from '../types';
 import Switch from 'react-switch';
@@ -11,13 +11,14 @@ interface iProps {
   selectedYear: string;
   selectedGame: number;
   selectedStat: string;
+  finderActive: boolean;
   showPlayers: boolean;
-  showFinder: boolean;
   changeYear: (picked: string) => void;
-  changeGame: (picked: number) => void;
-  changeStat: (picked: string) => void;
-  changeShowFinder: (bool:boolean)=>void;
-  changeShowPlayers: (checked: boolean) => void;
+  changeGame: Dispatch<SetStateAction<number>>;
+  changeStat: Dispatch<SetStateAction<string>>;
+  changeShowFinder: Dispatch<SetStateAction<boolean>>;
+  changeShowPlayers: Dispatch<SetStateAction<boolean>>;
+  changeFinderActive: () => void;
 }
 interface gameChoice {
   label: string;
@@ -67,13 +68,14 @@ const Header = ({
   showPlayers,
   selectedGame,
   selectedYear,
-  showFinder,
+  finderActive,
   changeGame,
   changeYear,
   selectedStat,
   changeStat,
   changeShowPlayers,
-  changeShowFinder
+  changeShowFinder,
+  changeFinderActive,
 }: iProps) => {
   const [gameOptions, setGameOptions] = useState<gameChoice[]>([]);
   const [yearOptions, setyearOptions] = useState<yearChoice[]>([]);
@@ -119,6 +121,7 @@ const Header = ({
             getOptionValue={(option) => option.value}
             className="select year"
             isSearchable={false}
+            isDisabled={finderActive}
             styles={{
               control: (provided) => ({...provided, padding: '5px 0px'}),
               valueContainer: (provided) => ({...provided, marginTop: 'auto'}),
@@ -128,25 +131,32 @@ const Header = ({
             }}
           />
         </div>
-        <div className = 'headerFinder'>
-          <button onClick = {()=>changeShowFinder(true)}>Lineup Finder</button>
+        <div className="headerFinder">
+          <button onClick={() => changeShowFinder(true)}>Search Lineups</button>
         </div>
       </div>
       <div className="headerGameControls">
-        <div className="gameInfo">
-          {selectedGame === -2 ? (
-            <div className="totals">Season Total</div>
-          ) : selectedGame === -1 ? (
-            <div className="totals">ACC Total</div>
-          ) : (
-            <div className="score">
-              <div>Wake Forest: {games[selectedGame].score.wake}</div>
-              <div>
-                {games[selectedGame].game}: {games[selectedGame].score.opp}
+        {finderActive && (
+          <div className="gameInfo">
+            <div className="totals">Lineup Finder</div>
+          </div>
+        )}
+        {!finderActive && (
+          <div className="gameInfo">
+            {selectedGame === -2 ? (
+              <div className="totals">Season Total</div>
+            ) : selectedGame === -1 ? (
+              <div className="totals">ACC Total</div>
+            ) : (
+              <div className="score">
+                <div>Wake Forest: {games[selectedGame].score.wake}</div>
+                <div>
+                  {games[selectedGame].game}: {games[selectedGame].score.opp}
+                </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
         <div className="selectContainer">
           <Select<gameChoice>
             options={gameOptions}
@@ -159,6 +169,7 @@ const Header = ({
             className="game select"
             isSearchable={false}
             isClearable={false}
+            isDisabled={finderActive}
             getOptionLabel={(option) => option.label}
             getOptionValue={(option) => option.value.toFixed()}
             styles={{
@@ -184,6 +195,7 @@ const Header = ({
             className="stat select"
             isSearchable={false}
             isClearable={false}
+            isDisabled={finderActive}
             getOptionLabel={(option) => option.label}
             getOptionValue={(option) => option.value}
             styles={{
@@ -196,7 +208,13 @@ const Header = ({
           />
         </div>
         <div className="playerSwitch">
-          <button onClick = {()=>changeShowPlayers(!showPlayers)}>{showPlayers ? 'Show Team' : 'Show Players'}</button>
+          {finderActive ? (
+            <button className = 'close' onClick={changeFinderActive}>Close Finder</button>
+          ) : (
+            <button onClick={() => changeShowPlayers(!showPlayers)}>
+              {showPlayers ? 'Show Team' : 'Show Players'}
+            </button>
+          )}
         </div>
       </div>
     </div>

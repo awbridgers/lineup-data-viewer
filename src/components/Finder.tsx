@@ -1,27 +1,32 @@
 import styled from 'styled-components';
-import {useContext, useEffect, useState} from 'react';
-import {player} from '../types';
+import {Dispatch, SetStateAction, useContext, useEffect, useState} from 'react';
+import {finderPlayer, player} from '../types';
 import Select, {CSSObjectWithLabel} from 'react-select';
 import {FirebaseContext} from './FirebaseProvider';
 
-interface SelectorProps {
-  disabled: boolean;
-  selectedPlayers: string[];
-  roster: string[];
-  selection: string;
-  changePlayer: (picked: string) => void;
-}
+
 
 interface FinderProps {
   year: string;
-  includeSelected: string[];
+  players: finderPlayer[];
+  changePlayers: Dispatch<SetStateAction<finderPlayer[]>>;
+  cancel: ()=>void;
+  submit: ()=>void;
 }
 interface Options {
   value: string;
   label: string;
 }
+interface IncludeOptions {
+  value: 'include' | 'omit';
+  label: string;
+}
 
 const nullOption = {label: '', value: ''};
+const includeArray: IncludeOptions[] = [
+  {label: 'include', value: 'include'},
+  {label: 'omit', value: 'omit'},
+];
 
 const customStyle = {
   control: (provided: CSSObjectWithLabel) => ({
@@ -40,10 +45,8 @@ const customStyle = {
   }),
 };
 
-const Finder = ({year, includeSelected}: FinderProps) => {
+const Finder = ({year, players, changePlayers, cancel,submit}: FinderProps) => {
   const [roster, setRoster] = useState<Options[]>([]);
-  const [include, setInclude] = useState<string[]>(includeSelected);
-  const [omit, setOmit] = useState<string[]>([]);
   const data = useContext(FirebaseContext);
 
   useEffect(() => {
@@ -58,106 +61,60 @@ const Finder = ({year, includeSelected}: FinderProps) => {
     }
   }, [year]);
 
-  const handleSelection = (
-    type: 'omit' | 'include',
-    selection: Options,
-    index: number
-  ) => {
-    if (type === 'omit') {
-      const newArray = omit.map((item, i) =>
-        i === index ? selection.value : item
-      );
-      setOmit(newArray);
-    } else {
-      const newArray = include.map((item, i) =>
-        i === index ? selection.value : item
-      );
-      setInclude(newArray);
-    }
-  };
-
   return (
     <Styles>
-      <div className = 'finderTitle'>Lineup Finder</div>
-      <div className = 'subTitle'>Include these players:</div> 
-      <div className="span">
-        <Select<Options>
-          value={include[0] ? {value: include[0], label: include[0]} : null}
-          onChange={(picked) =>
-            handleSelection('include', picked ? picked : nullOption, 0)
-          }
-          options={roster}
-          isClearable
-          isSearchable={false}
-          className="select"
-          styles={customStyle}
-          placeholder = 'Player 1'
-          isOptionDisabled={(option)=>[...include, ...omit].includes(option.value)}
-        />
+      <div className="finderTitle">Lineup Finder</div>
+      {players.map((line, index) => (
+        <div className="span" key={index}>
+          <Select<Options>
+            value={line.name ? {value: line.name, label: line.name} : null}
+            onChange={(picked) => {
+              changePlayers((prev) =>
+                prev.map((input, i) =>
+                  index !== i
+                    ? input
+                    : picked
+                    ? {...input, name: picked.value}
+                    : {...input, name: ''}
+                )
+              );
+            }}
+            options={roster}
+            isClearable
+            isSearchable={false}
+            className="select"
+            styles={customStyle}
+            placeholder={`Player ${index + 1}`}
+            isOptionDisabled={(option) =>
+              players.map((x) => x.name).includes(option.value)
+            }
+          />
+          <Select<IncludeOptions>
+            options={includeArray}
+            value={{label: line.type, value: line.type}}
+            onChange={(picked) =>
+              changePlayers((prev) =>
+                prev.map((input, i) =>
+                  i === index
+                    ? {...input, type: picked ? picked.value : 'include'}
+                    : input
+                )
+              )
+            }
+            isSearchable={false}
+            isClearable={false}
+            className="include"
+            styles = {customStyle}
+            //isOptionDisabled = {(option)=>option.value === }
+          />
+        </div>
+      ))}
+      <div>
+        {players.length < 10 && <button onClick = {()=>changePlayers(prev=>[...prev, {name: '', type: 'include'}])}>Add More</button>}
       </div>
-      <div className="span">
-        <Select<Options>
-          value={include[1] ? {value: include[1], label: include[1]} : null}
-          onChange={(picked) =>
-            handleSelection('include', picked ? picked : nullOption, 1)
-          }
-          options={roster}
-          isClearable
-          isSearchable={false}
-          className="select"
-          styles={customStyle}
-          placeholder = 'Player 2'
-          isOptionDisabled={(option)=>[...include, ...omit].includes(option.value)}
-
-        />
-      </div>
-      <div className="span">
-        <Select<Options>
-          value={include[2] ? {value: include[2], label: include[2]} : null}
-          onChange={(picked) =>
-            handleSelection('include', picked ? picked : nullOption, 2)
-          }
-          options={roster}
-          isClearable
-          isSearchable={false}
-          className="select"
-          styles={customStyle}
-          placeholder = 'Player 3'
-          isOptionDisabled={(option)=>[...include, ...omit].includes(option.value)}
-
-        />
-      </div>
-      <div className="span">
-        <Select<Options>
-          value={include[3] ? {value: include[3], label: include[3]} : null}
-          onChange={(picked) =>
-            handleSelection('include', picked ? picked : nullOption, 3)
-          }
-          options={roster}
-          isClearable
-          isSearchable={false}
-          className="select"
-          styles={customStyle}
-          placeholder = 'Player 4'
-          isOptionDisabled={(option)=>[...include, ...omit].includes(option.value)}
-
-        />
-      </div>
-      <div className="span">
-        <Select<Options>
-          value={include[4] ? {value: include[4], label: include[4]} : null}
-          onChange={(picked) =>
-            handleSelection('include', picked ? picked : nullOption, 4)
-          }
-          options={roster}
-          isClearable
-          isSearchable={false}
-          className="select"
-          styles={customStyle}
-          placeholder = 'Player 5'
-          isOptionDisabled={(option)=>[...include, ...omit].includes(option.value)}
-
-        />
+      <div>
+        <button className = 'submit' onClick = {submit}>Find Lineups</button>
+        <button className = 'cancel' onClick = {cancel}>Cancel</button>
       </div>
     </Styles>
   );
@@ -176,19 +133,24 @@ const Styles = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  .finderTitle{
+  .finderTitle {
     font-size: 24px;
     font-weight: bold;
     margin: 5px 0px;
   }
-  .subTitle{
+  .subTitle {
     font-size: 18px;
     font-weight: 600;
   }
   .select {
     font-size: 14px;
     margin: 2px 5px;
-    width: 250px;
+    flex-grow: 1;
+  }
+  .include {
+    width: 30%;
+    font-size: 14px;
+    font-weight: 600;
   }
   .playerLabel {
     font-size: 16px;
@@ -196,10 +158,32 @@ const Styles = styled.div`
   }
   .span {
     display: flex;
-    width: 100%;
+    width: 95%;
     flex-flow: row nowrap;
+    margin: auto;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
+  }
+  .submit{
+    border-radius: 8px;
+    width: 125px;
+    height: 40px;
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    margin: 5px 5px;
+  }
+  .cancel{
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 8px;
+    width: 125px;
+    height: 40px;
+    margin: 5px 5px;
+  }
+  .submit:hover, .cancel:hover{
+    background-color: #808080;
   }
 `;
 

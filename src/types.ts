@@ -35,3 +35,7 @@ export interface totalData {
 export interface rawData {
   [year:string] : gameData[];
 }
+export interface finderPlayer {
+  name: string;
+  type: 'omit'| 'include'
+}
