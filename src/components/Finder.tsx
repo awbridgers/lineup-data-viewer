@@ -28,6 +28,8 @@ const includeArray: IncludeOptions[] = [
   {label: 'omit', value: 'omit'},
 ];
 
+
+
 const customStyle = {
   control: (provided: CSSObjectWithLabel) => ({
     ...provided,
@@ -53,7 +55,7 @@ const Finder = ({year, players, changePlayers, cancel,submit}: FinderProps) => {
     //get the roster from the list of player data
     if (data) {
       setRoster(
-        data[year].season.players.map((x) => ({
+        data[year].season.players.sort((a,b)=>b.time - a.time).map((x) => ({
           label: x.players,
           value: x.players,
         }))

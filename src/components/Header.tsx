@@ -195,7 +195,6 @@ const Header = ({
             className="stat select"
             isSearchable={false}
             isClearable={false}
-            isDisabled={finderActive}
             getOptionLabel={(option) => option.label}
             getOptionValue={(option) => option.value}
             styles={{

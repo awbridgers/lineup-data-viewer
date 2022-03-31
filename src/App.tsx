@@ -45,15 +45,15 @@ const App = () => {
   const findLineups = () => {
     //split the players into omitted and included
     const include = finderPlayers.filter((x) => x.type === 'include' && x.name !== '');
-    //const omit = finderPlayers.filter((x) => x.type === 'omit' && x.name!=='');
+    const omit = finderPlayers.filter((x) => x.type === 'omit' && x.name!=='');
     console.log(include)
     const found = sortedData
       .filter((lineups) =>
         include.every((name) => lineups.players.includes(name.name))
       )
-      //.filter((lineups) =>
-       // omit.some((name) => !lineups.players.includes(name.name))
-      //);
+      .filter((lineups) =>
+       omit.every((name) => !lineups.players.includes(name.name))
+      );
       setFinderData(found);
       setShowFinder(false)
       setFinderActive(true)
@@ -99,7 +99,7 @@ const App = () => {
           year={selectedYear}
           players={finderPlayers}
           changePlayers={setFinderPlayers}
-          cancel={cancel}
+          cancel={()=>setShowFinder(false)}
           submit = {findLineups}
         />
       )}
