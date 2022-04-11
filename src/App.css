@@ -5,100 +5,9 @@ body {
   background-color: black;
   text-align: center;
   min-height: 100vh;
-  min-width: 1000px;
+  min-width: 900px;
 }
-.App-header {
-  background-color: black;
-  height: auto;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 10px;
-}
-.headerGameControls {
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  min-height: 130px;
-  flex-grow: 1;
-}
-.headerStatControls, .headerYearControls{
-  align-items: center;
-  justify-content: space-around;
-  display: flex;
-  flex-flow: column nowrap;
-  min-height:130px;
-}
-.playerSwitch button, .headerFinder button{
-  width: 125px;
-  height: 50px;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 16px;
-}
-.playerSwitch button:hover, .headerFinder button:hover{
-  background-color: #808080;
-}
-.playerSwitch .close {
-  background-color: rgb(218, 99, 99);
-}
-.playerSwitch .close:hover{
-  background-color: rgb(230, 38, 38);
-}
-.gameInfo {
-  text-align: center;
-  font-size: 18px;
-  min-height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 5px 0px;
-  flex-grow: 1;
-  color: white;
-}
-.totals {
-  font-size: 24px;
-  font-weight: bold;
-}
-.score {
-  font-size: 20px;
-  font-weight: bold;
-}
-.title {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  height: 90px;
-}
-.select {
-  font-size: 16px;
-  align-self: flex-end;
-  font-weight: 600;
-}
-.label {
-  left: 5px;
-  pointer-events: none;
-  position: absolute;
-  transition: 0.2s ease all;
-  -moz-transition: 0.2s ease all;
-  -webkit-transition: 0.2s ease all;
-  top: 5%;
-  color: grey;
-  z-index: 1;
-  font-size: 14px;
-  font-weight: 500;
-}
-.year, .stat {
-  width: 125px;
-}
-.game {
-  width: 200px;
-}
-.selectContainer {
-  display: flex;
-}
+
 
 
 /* .lineupTable {
@@ -319,8 +228,12 @@ h1 {
   margin: 5px;
 }
 
-@media only screen and (max-width: 667px) and (orientation: portrait) {
+@media only screen and (max-width: 767px)  {
   /* mobile layout here */
+  .App{
+    width: 100vw;
+    min-width: unset;
+  }
   .lineupTable th,
   .click {
     font-size: 11px;

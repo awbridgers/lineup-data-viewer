@@ -3,6 +3,8 @@ import {Lineup} from '../lineupClass';
 import {total, net, advanced, shooting, csvHeaders} from '../util/tableSetup';
 import {Column, useTable, useSortBy, useFlexLayout} from 'react-table';
 import {CSVLink} from 'react-csv';
+import { TableStyle } from "../styles/table";
+import {useSticky} from 'react-table-sticky'
 
 import styled from 'styled-components';
 
@@ -47,11 +49,12 @@ const Table = ({data, type}: iProps) => {
   } = useTable(
     {columns: tableColumns, data: tableData, defaultColumn},
     useSortBy,
-    useFlexLayout
+    useFlexLayout,
+    useSticky
   );
   return (
-    <Styles>
-      <div {...getTableProps()} className={`table ${type}`}>
+    <TableStyle>
+      <div {...getTableProps()} className={`table sticky ${type}`}>
         <div className="thead">
           {headerGroups.map((headerGroup) => (
             <div {...headerGroup.getHeaderGroupProps()} className="tr">
@@ -88,9 +91,9 @@ const Table = ({data, type}: iProps) => {
           {footerGroups.map(
             (foot, i) =>
               i === 0 && (
-                <div {...foot.getFooterGroupProps()} className="tr">
+                <div {...foot.getHeaderGroupProps()} className="tr">
                   {foot.headers.map((column) => (
-                    <div {...column.getFooterProps()} className="td">
+                    <div {...column.getHeaderProps()} className="td">
                       {column.render('Footer')}
                     </div>
                   ))}
@@ -99,109 +102,10 @@ const Table = ({data, type}: iProps) => {
           )}
         </div>
       </div>
-    </Styles>
+    </TableStyle>
   );
 };
 
-const Styles = styled.div`
-  display: block;
-  /* overflow: auto; */
-  min-width: 1000px;
-  padding-bottom: 50px;
 
-  .table {
-    width: 100%;
-    .thead {
-      /* overflow-y: auto; */
-      overflow-x: hidden;
-      position: sticky;
-      top: 0px;
-      background: #42444e;
-      color: #fff;
-      .tr {
-        border-bottom: 2px solid black;
-      }
-    }
-    .tbody {
-      /* overflow-y: scroll; */
-      overflow-x: auto;
-      /* height: 500px; */
-
-      .tr {
-        min-height: 100px;
-        &:nth-child(odd) {
-          background: #d3d3d3;
-        }
-        &:nth-child(even) {
-          background: #888888;
-        }
-      }
-    }
-    .tfoot {
-      position: sticky;
-      bottom:0;
-      .tr {
-        background: #42444e;
-        color: #fff;
-        min-height: 50px;
-      }
-    }
-  }
-  .net,
-  .advanced,
-  .shooting {
-    .td {
-      white-space: pre;
-      padding: 3px 2px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-bottom: 2px solid black;
-      border-right: 2px solid black;
-      font-size: 16px;
-      font-weight: bold;
-      font-family: tahoma;
-    }
-    .th {
-      height: 50px;
-      word-wrap: break-word;
-      text-align: center;
-      border-right: 2px solid black;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      font-weight: bold;
-    }
-  }
-  .total {
-    .td {
-      white-space: pre;
-      padding: 3px 1px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-bottom: 2px solid black;
-      border-right: 2px solid black;
-      font-size: 12px;
-      font-weight: 600;
-      font-family: tahoma;
-    }
-    .th {
-      height: 50px;
-      word-wrap: break-word;
-      text-align: center;
-      border-right: 2px solid black;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: bold;
-      a{
-        color: white;
-      }
-    }
-  }
-`;
 
 export default Table;

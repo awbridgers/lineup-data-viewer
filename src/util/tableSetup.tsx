@@ -27,6 +27,7 @@ export const total: Array<Column<Lineup>> = [
     Cell: ({value}) => value.replace(/-/g, '\n'),
     className: 'pre',
     disableSortBy: true,
+    sticky: 'left',
     width: 120,
     sortDescFirst: true,
     sortType: sortNumbers,
@@ -578,6 +579,7 @@ export const net: Array<Column<Lineup>> = [
     accessor: 'players',
     Cell: ({value}) => value.replace(/-/g, '\n'),
     className: 'pre',
+    sticky: 'left',
     width: 140,
     disableSortBy: true,
     sortDescFirst: true,
@@ -821,6 +823,7 @@ export const advanced: Array<Column<Lineup>> = [
     className: 'pre',
     disableSortBy: true,
     width: 140,
+    sticky: 'left',
     sortDescFirst: true,
     sortType: sortNumbers,
     Footer: (info) => {
@@ -831,7 +834,6 @@ export const advanced: Array<Column<Lineup>> = [
   {
     Header: 'Poss',
     accessor: 'possessions',
-    disableSortBy: true,
     sortDescFirst: true,
     sortType: sortNumbers,
     Footer: (info) => {
@@ -849,7 +851,6 @@ export const advanced: Array<Column<Lineup>> = [
   {
     Header: 'O RTG',
     accessor: 'oRating',
-    disableSortBy: true,
     sortDescFirst: true,
     sortType: sortNumbers,
     Footer: (info) => {
@@ -870,7 +871,6 @@ export const advanced: Array<Column<Lineup>> = [
   {
     Header: 'D RTG',
     accessor: 'dRating',
-    disableSortBy: true,
     sortDescFirst: true,
     sortType: sortNumbers,
     Footer: (info) => {
@@ -1028,6 +1028,7 @@ export const shooting: Array<Column<Lineup>> = [
     className: 'pre',
     disableSortBy: true,
     width: 150,
+       sticky: 'left',
     sortDescFirst: true,
     sortType: sortNumbers,
     Footer: (info) => {

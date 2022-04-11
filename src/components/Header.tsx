@@ -4,6 +4,7 @@ import {gameData, seasonData} from '../types';
 import Switch from 'react-switch';
 import '../App.css';
 import {Lineup} from '../lineupClass';
+import {HeaderStyle} from '../styles/header'
 
 interface iProps {
   games: gameData[];
@@ -105,7 +106,7 @@ const Header = ({
     setyearOptions(yearOptions);
   }, [years]);
   return (
-    <div className="App-header">
+    <HeaderStyle>
       <div className="headerYearControls">
         <div className="selectContainer">
           <Select
@@ -216,7 +217,7 @@ const Header = ({
           )}
         </div>
       </div>
-    </div>
+    </HeaderStyle>
   );
 };
 
