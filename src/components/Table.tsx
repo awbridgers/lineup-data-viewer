@@ -1,8 +1,11 @@
 import {useMemo} from 'react';
 import {Lineup} from '../lineupClass';
 import {total, net, advanced, shooting, csvHeaders} from '../util/tableSetup';
-import {Column, useTable, useSortBy, useFlexLayout} from 'react-table';
+import {Column, useBlockLayout, useTable, useSortBy, useFlexLayout} from 'react-table';
 import {CSVLink} from 'react-csv';
+import { TableStyle } from "../styles/table";
+import { useMediaQuery } from 'react-responsive';
+import { useSticky } from 'react-table-sticky';
 
 import styled from 'styled-components';
 
@@ -13,27 +16,28 @@ interface iProps {
 
 const Table = ({data, type}: iProps) => {
   const tableData = useMemo<Lineup[]>(() => data, [data]);
+  const isMobile = useMediaQuery({maxWidth: '767px'})
 
   const tableColumns = useMemo<Column<Lineup>[]>(() => {
     switch (type) {
       case 'total':
-        return total;
+        return total(isMobile);
       case 'net':
-        return net;
+        return net(isMobile);
       case 'advanced':
-        return advanced;
+        return advanced(isMobile);
       case 'shooting':
-        return shooting;
+        return shooting(isMobile);
       default:
-        return total;
+        return total(isMobile);
     }
   }, [type]);
   const defaultColumn = useMemo(
     () => ({
       // When using the useFlexLayout:
-      minWidth: 30, // minWidth is only used as a limit for resizing
-      width: 30, // width is used for both the flex-basis and flex-grow
-      maxWidth: 200, // maxWidth is only used as a limit for resizing
+      minWidth: 0, // minWidth is only used as a limit for resizing
+      width:  isMobile ? 15 : 30, // width is used for both the flex-basis and flex-grow
+      maxWidth: isMobile ? 80 : 200, // maxWidth is only used as a limit for resizing
     }),
     []
   );
@@ -47,18 +51,19 @@ const Table = ({data, type}: iProps) => {
   } = useTable(
     {columns: tableColumns, data: tableData, defaultColumn},
     useSortBy,
-    useFlexLayout
+    useFlexLayout,
+    useSticky
   );
   return (
-    <Styles>
-      <div {...getTableProps()} className={`table ${type}`}>
+    <TableStyle>
+      <div {...getTableProps()} className={`table sticky ${type}`}>
         <div className="thead">
           {headerGroups.map((headerGroup) => (
             <div {...headerGroup.getHeaderGroupProps()} className="tr">
               {headerGroup.headers.map((column) => (
                 <div
                   {...column.getHeaderProps(column.getSortByToggleProps())}
-                  className="th"
+                  className={`th ${column.className}`}
                 >
                   {column.id === 'players_placeholder_0' && type === 'total' ? (
                     <CSVLink headers={csvHeaders} data={rows}>Download</CSVLink>
@@ -76,7 +81,7 @@ const Table = ({data, type}: iProps) => {
             return (
               <div {...row.getRowProps()} className="tr">
                 {row.cells.map((cell) => (
-                  <div {...cell.getCellProps()} className="td">
+                  <div {...cell.getCellProps()}  className={`td ${cell.column.className}`}>
                     {cell.render('Cell')}
                   </div>
                 ))}
@@ -88,9 +93,9 @@ const Table = ({data, type}: iProps) => {
           {footerGroups.map(
             (foot, i) =>
               i === 0 && (
-                <div {...foot.getFooterGroupProps()} className="tr">
+                <div {...foot.getHeaderGroupProps()} className="tr">
                   {foot.headers.map((column) => (
-                    <div {...column.getFooterProps()} className="td">
+                    <div {...column.getHeaderProps()} className="td">
                       {column.render('Footer')}
                     </div>
                   ))}
@@ -99,109 +104,10 @@ const Table = ({data, type}: iProps) => {
           )}
         </div>
       </div>
-    </Styles>
+    </TableStyle>
   );
 };
 
-const Styles = styled.div`
-  display: block;
-  /* overflow: auto; */
-  min-width: 1000px;
-  padding-bottom: 50px;
 
-  .table {
-    width: 100%;
-    .thead {
-      /* overflow-y: auto; */
-      overflow-x: hidden;
-      position: sticky;
-      top: 0px;
-      background: #42444e;
-      color: #fff;
-      .tr {
-        border-bottom: 2px solid black;
-      }
-    }
-    .tbody {
-      /* overflow-y: scroll; */
-      overflow-x: auto;
-      /* height: 500px; */
-
-      .tr {
-        min-height: 100px;
-        &:nth-child(odd) {
-          background: #d3d3d3;
-        }
-        &:nth-child(even) {
-          background: #888888;
-        }
-      }
-    }
-    .tfoot {
-      position: sticky;
-      bottom:0;
-      .tr {
-        background: #42444e;
-        color: #fff;
-        min-height: 50px;
-      }
-    }
-  }
-  .net,
-  .advanced,
-  .shooting {
-    .td {
-      white-space: pre;
-      padding: 3px 2px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-bottom: 2px solid black;
-      border-right: 2px solid black;
-      font-size: 16px;
-      font-weight: bold;
-      font-family: tahoma;
-    }
-    .th {
-      height: 50px;
-      word-wrap: break-word;
-      text-align: center;
-      border-right: 2px solid black;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      font-weight: bold;
-    }
-  }
-  .total {
-    .td {
-      white-space: pre;
-      padding: 3px 1px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-bottom: 2px solid black;
-      border-right: 2px solid black;
-      font-size: 12px;
-      font-weight: 600;
-      font-family: tahoma;
-    }
-    .th {
-      height: 50px;
-      word-wrap: break-word;
-      text-align: center;
-      border-right: 2px solid black;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: bold;
-      a{
-        color: white;
-      }
-    }
-  }
-`;
 
 export default Table;

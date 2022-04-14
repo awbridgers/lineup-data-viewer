@@ -20,14 +20,15 @@ const sortNumbers = (
   return a > b ? 1 : a < b ? -1 : 0;
 };
 
-export const total: Array<Column<Lineup>> = [
+export const total = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'Lineup',
     accessor: 'players',
     Cell: ({value}) => value.replace(/-/g, '\n'),
     className: 'pre',
     disableSortBy: true,
-    width: 120,
+    sticky: 'left',
+    width: isMobile ? 55 : 120,
     sortDescFirst: true,
     sortType: sortNumbers,
     Footer: (info) => {
@@ -39,7 +40,7 @@ export const total: Array<Column<Lineup>> = [
     Header: 'Time',
     accessor: 'time',
     Cell: ({value}) => fixTime(value),
-    width: 50,
+    width: isMobile ? 25 : 50,
     sortDescFirst: true,
     sortType: sortNumbers,
     Footer: (info) => {
@@ -572,13 +573,14 @@ export const total: Array<Column<Lineup>> = [
   },
 ];
 
-export const net: Array<Column<Lineup>> = [
+export const net = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'Lineup',
     accessor: 'players',
     Cell: ({value}) => value.replace(/-/g, '\n'),
     className: 'pre',
-    width: 140,
+    sticky: 'left',
+    width: isMobile ? 40 : 140,
     disableSortBy: true,
     sortDescFirst: true,
     sortType: sortNumbers,
@@ -591,7 +593,7 @@ export const net: Array<Column<Lineup>> = [
     Header: 'Time',
     accessor: 'time',
     Cell: ({value}) => fixTime(value),
-    width: 60,
+    width: isMobile ? 20 : 60,
     sortDescFirst: true,
     sortType: sortNumbers,
     Footer: (info) => {
@@ -813,14 +815,15 @@ export const net: Array<Column<Lineup>> = [
   },
 ];
 
-export const advanced: Array<Column<Lineup>> = [
+export const advanced = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'Lineup',
     accessor: 'players',
     Cell: ({value}) => value.replace(/-/g, '\n'),
     className: 'pre',
     disableSortBy: true,
-    width: 140,
+    width: isMobile ? 40 : 140,
+    sticky: 'left',
     sortDescFirst: true,
     sortType: sortNumbers,
     Footer: (info) => {
@@ -831,7 +834,6 @@ export const advanced: Array<Column<Lineup>> = [
   {
     Header: 'Poss',
     accessor: 'possessions',
-    disableSortBy: true,
     sortDescFirst: true,
     sortType: sortNumbers,
     Footer: (info) => {
@@ -849,7 +851,6 @@ export const advanced: Array<Column<Lineup>> = [
   {
     Header: 'O RTG',
     accessor: 'oRating',
-    disableSortBy: true,
     sortDescFirst: true,
     sortType: sortNumbers,
     Footer: (info) => {
@@ -870,7 +871,6 @@ export const advanced: Array<Column<Lineup>> = [
   {
     Header: 'D RTG',
     accessor: 'dRating',
-    disableSortBy: true,
     sortDescFirst: true,
     sortType: sortNumbers,
     Footer: (info) => {
@@ -1020,14 +1020,15 @@ export const advanced: Array<Column<Lineup>> = [
   },
 ];
 
-export const shooting: Array<Column<Lineup>> = [
+export const shooting = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'Lineup',
     accessor: 'players',
     Cell: ({value}) => value.replace(/-/g, '\n'),
     className: 'pre',
     disableSortBy: true,
-    width: 150,
+    width: isMobile ? 55 : 150,
+    sticky: 'left',
     sortDescFirst: true,
     sortType: sortNumbers,
     Footer: (info) => {
