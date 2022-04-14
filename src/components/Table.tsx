@@ -1,10 +1,11 @@
 import {useMemo} from 'react';
 import {Lineup} from '../lineupClass';
 import {total, net, advanced, shooting, csvHeaders} from '../util/tableSetup';
-import {Column, useTable, useSortBy, useFlexLayout} from 'react-table';
+import {Column, useBlockLayout, useTable, useSortBy, useFlexLayout} from 'react-table';
 import {CSVLink} from 'react-csv';
 import { TableStyle } from "../styles/table";
-import {useSticky} from 'react-table-sticky'
+import { useMediaQuery } from 'react-responsive';
+import { useSticky } from 'react-table-sticky';
 
 import styled from 'styled-components';
 
@@ -15,27 +16,28 @@ interface iProps {
 
 const Table = ({data, type}: iProps) => {
   const tableData = useMemo<Lineup[]>(() => data, [data]);
+  const isMobile = useMediaQuery({maxWidth: '767px'})
 
   const tableColumns = useMemo<Column<Lineup>[]>(() => {
     switch (type) {
       case 'total':
-        return total;
+        return total(isMobile);
       case 'net':
-        return net;
+        return net(isMobile);
       case 'advanced':
-        return advanced;
+        return advanced(isMobile);
       case 'shooting':
-        return shooting;
+        return shooting(isMobile);
       default:
-        return total;
+        return total(isMobile);
     }
   }, [type]);
   const defaultColumn = useMemo(
     () => ({
       // When using the useFlexLayout:
-      minWidth: 30, // minWidth is only used as a limit for resizing
-      width: 30, // width is used for both the flex-basis and flex-grow
-      maxWidth: 200, // maxWidth is only used as a limit for resizing
+      minWidth: 0, // minWidth is only used as a limit for resizing
+      width:  isMobile ? 15 : 30, // width is used for both the flex-basis and flex-grow
+      maxWidth: isMobile ? 80 : 200, // maxWidth is only used as a limit for resizing
     }),
     []
   );
@@ -61,7 +63,7 @@ const Table = ({data, type}: iProps) => {
               {headerGroup.headers.map((column) => (
                 <div
                   {...column.getHeaderProps(column.getSortByToggleProps())}
-                  className="th"
+                  className={`th ${column.className}`}
                 >
                   {column.id === 'players_placeholder_0' && type === 'total' ? (
                     <CSVLink headers={csvHeaders} data={rows}>Download</CSVLink>
@@ -79,7 +81,7 @@ const Table = ({data, type}: iProps) => {
             return (
               <div {...row.getRowProps()} className="tr">
                 {row.cells.map((cell) => (
-                  <div {...cell.getCellProps()} className="td">
+                  <div {...cell.getCellProps()}  className={`td ${cell.column.className}`}>
                     {cell.render('Cell')}
                   </div>
                 ))}

@@ -100,7 +100,7 @@ export const HeaderStyle = styled.div`
   .selectContainer {
     display: flex;
   }
-  @media screen and (max-width: 767px) {
+  @media screen and (max-width: 850px) {
     .playerSwitch button,
     .headerFinder button {
       width: 100px;

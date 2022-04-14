@@ -3,68 +3,59 @@ import styled from 'styled-components';
 export const TableStyle = styled.div`
   display: block;
   padding-bottom: 50px;
+  width: 100%;
   .table {
     width: 100%;
+
     .thead {
       position: sticky;
       top: 0px;
       color: #fff;
+      z-index: 4;
+
       .tr {
         border-bottom: 2px solid black;
       }
-      .th{
+      .th {
         background: #42444e;
       }
-      [data-sticky-last-left-td]{
-        z-index: 4 !important;
-        
-      }
-      
     }
     .tbody {
+      .td{
+        overflow: hidden;
+      }
       .tr {
         min-height: 100px;
-        
+
         &:nth-child(odd) {
-          .td{
-          background: #d3d3d3;
-          opacity: 1;
-        }}
-        &:nth-child(even) {
-          .td{
-            background: #888888;
+          .td {
+            background: #d3d3d3;
           }
-          
         }
-      }
-      .td{
-        z-index: -2 ;
-      }
-      [data-sticky-td]{
-        z-index: -1 !important;
+        &:nth-child(even) {
+          .td {
+            background: #888888;
+            
+          }
+        }
       }
     }
     .tfoot {
       position: sticky;
       bottom: 0;
+      z-index: 4;
       .tr {
-        
         color: #fff;
         min-height: 50px;
-        z-index:1;
       }
-      .td{
-        z-index: -2 ;
-        background: #42444e;
-      }
-      [data-sticky-td]{
-        z-index: -1 !important;
+      .td {
+        background-color: #42444e;
       }
     }
   }
   .net,
-  .advanced,
-  .shooting {
+  .advanced
+   {
     .td {
       white-space: pre;
       padding: 3px 2px;
@@ -73,7 +64,7 @@ export const TableStyle = styled.div`
       justify-content: center;
       border-bottom: 2px solid black;
       border-right: 2px solid black;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: bold;
       font-family: tahoma;
     }
@@ -89,7 +80,7 @@ export const TableStyle = styled.div`
       font-weight: bold;
     }
   }
-  .total {
+  .total, .shooting {
     .td {
       white-space: pre;
       padding: 3px 1px;
@@ -116,34 +107,47 @@ export const TableStyle = styled.div`
         color: white;
       }
     }
-    
-    
+    [data-sticky-td] {
+      position: sticky;
+    }
   }
-  @media screen and (max-width: 767px) {
-    width: 100%;
-    overflow-x: scroll;
+  @media screen and (max-width: 850px) {
+    overflow: hidden;
+    padding-bottom: 0px;
     .table {
-      width: 1000px;
-      
+      overflow: scroll;
+      height: 100%;
+      width: 100%;
+    /* All the rows more space so they can scroll */
+    /* Total needs way more space than the rest */
+    }
+    .total, .shooting {
+      .thead,
+      .tbody,
+      .tfoot {
+        min-width: 1000px;
+      }
+      .td {
+        font-size: 11px;
+      }
+      .th {
+        font-size: 13px;
+      }
     }
     .net,
-  .advanced,
-  .shooting {
-    .td {
-      white-space: pre;
-      padding: 3px 2px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-bottom: 2px solid black;
-      border-right: 2px solid black;
-      font-size: 12px;
-      font-weight: bold;
-      font-family: tahoma;
-    }
-    .td, .th{
-      flex-grow: 1 !important;
+    .advanced
+     {
+      .thead,
+      .tbody,
+      .tfoot {
+        min-width: 600px;
+      }
+      .td {
+        font-size: 12px;
+      }
+      .th {
+        font-size: 14px;
+      }
     }
   }
-}
 `;
