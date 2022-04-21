@@ -6,6 +6,7 @@ import {finderPlayer, seasonData, totalData} from './types';
 import Header from './components/Header';
 import Table from './components/Table';
 import Finder from './components/Finder';
+import { getLatestYear } from './util/getLatestYear';
 
 interface Iprops {
   data: seasonData;
@@ -20,10 +21,11 @@ const defaultFinder: finderPlayer[] = [
 ];
 
 const App = () => {
+  const data = useContext(FirebaseContext);
   //state variables
   const [sortedData, setSortedData] = useState<Lineup[]>([]);
   const [finderData, setFinderData] = useState<Lineup[]>([])
-  const [selectedYear, setSelectedYear] = useState<string>('current');
+  const [selectedYear, setSelectedYear] = useState<string>('');
   const [showPlayers, setShowPlayers] = useState<boolean>(false);
   //games are order 0-32 so using -2 for season and -1 for conference totals
   const [selectedGame, setSelectedGame] = useState<number>(-2);
@@ -32,7 +34,7 @@ const App = () => {
   const [finderActive, setFinderActive] = useState<boolean>(false)
   const [finderPlayers, setFinderPlayers] =
     useState<finderPlayer[]>(defaultFinder);
-  const data = useContext(FirebaseContext);
+
   const changeYear = (year: string) => {
     setSelectedGame(-2);
     setSelectedYear(year);
@@ -58,9 +60,18 @@ const App = () => {
       setShowFinder(false)
       setFinderActive(true)
   };
+  //selected the most current year on launch
+  useEffect(()=>{
+    if(data){
+      if(!selectedYear){
+        setSelectedYear(getLatestYear(data))
+      }
+    }
+  },[data])
   useEffect(() => {
-    const playerOrTeam = showPlayers ? 'players' : 'lineups';
-    if (data) {
+    
+    if (data && selectedYear) {
+      const playerOrTeam = showPlayers ? 'players' : 'lineups';
       const year = data[selectedYear];
       const unsorted =
         selectedGame === -2
@@ -73,7 +84,7 @@ const App = () => {
       
     }
   }, [data, selectedGame, selectedYear, showPlayers]);
-  if (!data) {
+  if (!data || !selectedYear) {
     return <div>Loading...</div>;
   }
   return (

@@ -91,17 +91,13 @@ const Header = ({
   useEffect(() => {
     const yearOptions: yearChoice[] = years
       .map((year) => ({
-        label: `${year[0].toUpperCase()}${year.slice(1)}`,
+        label: year,
         value: year,
       }))
       .sort((a, b) => {
-        if (a.value === 'current') {
-          return -1;
-        }
-        if (b.value === 'current') {
-          return 1;
-        }
-        return +a.label - +b.label;
+        const yearA = +a.value.slice(0,4)
+        const yearB = +b.value.slice(0,4);
+        return yearB-yearA
       });
     setyearOptions(yearOptions);
   }, [years]);
