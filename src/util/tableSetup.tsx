@@ -7,16 +7,31 @@ interface SortProps {
   rowA: Row<Lineup>;
   rowB: Row<Lineup>;
   id: string;
+  desc: boolean;
 }
 
 const format = new Intl.NumberFormat('en-us', {signDisplay: 'always'});
 const sortNumbers = (
   rowA: Row<Lineup>,
   rowB: Row<Lineup>,
-  id: string
+  id: string,
+  desc?:boolean
 ): number => {
+  const isDesc = desc ? desc : false;
+  console.log(isDesc)
   const a = +rowA.values[id];
   const b = +rowB.values[id];
+    //take care of dividing by 0 for percentages
+    //always keep NaN's at bottom of list
+    if(isNaN(a) && isNaN(b)){
+      return 0
+    }
+    if(isNaN(a)){
+      return isDesc ? -1 : 999
+    }
+    if(isNaN(b)){
+      return isDesc ? 1 : -999
+    }
   return a > b ? 1 : a < b ? -1 : 0;
 };
 
