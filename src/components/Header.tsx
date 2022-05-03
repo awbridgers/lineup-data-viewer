@@ -1,6 +1,6 @@
 import {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import Select, {components} from 'react-select';
-import {gameData, seasonData} from '../types';
+import {gameData, group, seasonData} from '../types';
 import Switch from 'react-switch';
 import '../App.css';
 import {Lineup} from '../lineupClass';
@@ -13,12 +13,12 @@ interface iProps {
   selectedGame: number;
   selectedStat: string;
   finderActive: boolean;
-  showPlayers: boolean;
+  selectedGroup: string;
+  changeGroup: Dispatch<SetStateAction<group>>
   changeYear: (picked: string) => void;
   changeGame: Dispatch<SetStateAction<number>>;
   changeStat: Dispatch<SetStateAction<string>>;
   changeShowFinder: Dispatch<SetStateAction<boolean>>;
-  changeShowPlayers: Dispatch<SetStateAction<boolean>>;
   changeFinderActive: () => void;
 }
 interface gameChoice {
@@ -32,6 +32,10 @@ interface yearChoice {
 interface statChoice {
   label: string;
   value: 'total' | 'net' | 'advanced' | 'shooting';
+}
+interface groupChoice {
+  label: string;
+  value: group;
 }
 
 const statOptions: statChoice[] = [
@@ -52,6 +56,11 @@ const statOptions: statChoice[] = [
     value: 'shooting',
   },
 ];
+const groupOptions:groupChoice[] = [
+  {value: 'lineups', label: 'Lineups'},
+  {value: 'players', label: 'Players'},
+  {value: 'yearly', label: 'Year to Year'}
+]
 
 //custom control compononet for select
 const Control = (props: any) => {
@@ -66,15 +75,15 @@ const Control = (props: any) => {
 const Header = ({
   games,
   years,
-  showPlayers,
+  selectedGroup,
   selectedGame,
   selectedYear,
   finderActive,
   changeGame,
   changeYear,
+  changeGroup,
   selectedStat,
   changeStat,
-  changeShowPlayers,
   changeShowFinder,
   changeFinderActive,
 }: iProps) => {
@@ -118,7 +127,7 @@ const Header = ({
             getOptionValue={(option) => option.value}
             className="select year"
             isSearchable={false}
-            isDisabled={finderActive}
+            isDisabled={finderActive || selectedGroup === 'yearly'}
             styles={{
               control: (provided) => ({...provided, padding: '5px 0px'}),
               valueContainer: (provided) => ({...provided, marginTop: 'auto'}),
@@ -204,13 +213,27 @@ const Header = ({
           />
         </div>
         <div className="playerSwitch">
-          {finderActive ? (
-            <button className = 'close' onClick={changeFinderActive}>Close Finder</button>
-          ) : (
-            <button onClick={() => changeShowPlayers(!showPlayers)}>
-              {showPlayers ? 'Show Team' : 'Show Players'}
-            </button>
-          )}
+        <Select<groupChoice>
+            options={groupOptions}
+            value={groupOptions.find((x) => x.value === selectedGroup)}
+            onChange={(picked) =>
+              picked
+                ? changeGroup(picked.value)
+                : console.log('No option selected')
+            }
+            className="group select"
+            isSearchable={false}
+            isClearable={false}
+            getOptionLabel={(option) => option.label}
+            getOptionValue={(option) => option.value}
+            styles={{
+              control: (provided) => ({...provided, padding: '5px 0px'}),
+              valueContainer: (provided) => ({...provided, marginTop: 'auto'}),
+            }}
+            components={{
+              Control: (props) => <Control {...props} title="Group" />,
+            }}
+          />
         </div>
       </div>
     </HeaderStyle>

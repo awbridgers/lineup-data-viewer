@@ -39,3 +39,4 @@ export interface finderPlayer {
   name: string;
   type: 'omit'| 'include'
 }
+export type group = 'yearly'|'players'|'lineups'
