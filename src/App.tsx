@@ -2,11 +2,12 @@ import React, {useContext, useEffect, useState} from 'react';
 import {FirebaseContext} from './components/FirebaseProvider';
 import './App.css';
 import {Lineup} from './lineupClass';
-import {finderPlayer, seasonData, totalData} from './types';
+import {finderPlayer, group, seasonData, totalData} from './types';
 import Header from './components/Header';
 import Table from './components/Table';
 import Finder from './components/Finder';
 import { getLatestYear } from './util/getLatestYear';
+import { getYearlyData } from './util/yearlyData';
 
 interface Iprops {
   data: seasonData;
@@ -26,10 +27,10 @@ const App = () => {
   const [sortedData, setSortedData] = useState<Lineup[]>([]);
   const [finderData, setFinderData] = useState<Lineup[]>([])
   const [selectedYear, setSelectedYear] = useState<string>('');
-  const [showPlayers, setShowPlayers] = useState<boolean>(false);
   //games are order 0-32 so using -2 for season and -1 for conference totals
   const [selectedGame, setSelectedGame] = useState<number>(-2);
   const [selectedStat, setSelectedStat] = useState<string>('total');
+  const [selectedGroup, setSelectedGroup] = useState<group>('lineups')
   const [showFinder, setShowFinder] = useState<boolean>(false);
   const [finderActive, setFinderActive] = useState<boolean>(false)
   const [finderPlayers, setFinderPlayers] =
@@ -71,7 +72,11 @@ const App = () => {
   useEffect(() => {
     
     if (data && selectedYear) {
-      const playerOrTeam = showPlayers ? 'players' : 'lineups';
+      if(selectedGroup === 'yearly'){
+        setSortedData(getYearlyData(data))
+      }
+      else{
+        const playerOrTeam = selectedGroup
       const year = data[selectedYear];
       const unsorted =
         selectedGame === -2
@@ -81,9 +86,10 @@ const App = () => {
           : year.games[selectedGame].stats[playerOrTeam];
       const sorted = unsorted.sort((a, b) => b.time - a.time);
       setSortedData(sorted);
+      }
       
     }
-  }, [data, selectedGame, selectedYear, showPlayers]);
+  }, [data, selectedGame, selectedYear, selectedGroup]);
   if (!data || !selectedYear) {
     return <div>Loading...</div>;
   }
@@ -95,12 +101,12 @@ const App = () => {
         selectedStat={selectedStat}
         games={data[selectedYear].games}
         years={Object.keys(data)}
+        selectedGroup = {selectedGroup}
         changeShowFinder={setShowFinder}
         changeYear={changeYear}
         changeGame={setSelectedGame}
         changeStat={setSelectedStat}
-        showPlayers={showPlayers}
-        changeShowPlayers={setShowPlayers}
+        changeGroup = {setSelectedGroup}
         finderActive = {finderActive}
         changeFinderActive = {cancel}
       />
