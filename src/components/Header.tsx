@@ -143,8 +143,9 @@ const Header = ({
       </div>
       <div className="headerGameControls">
         {finderActive && (
-          <div className="gameInfo">
+          <div className="gameInfo" style = {{display:'flex', flexFlow: 'column'}}>
             <div className="totals">Lineup Finder</div>
+            <button className = 'back' onClick={changeFinderActive}>Exit Finder</button>
           </div>
         )}
         {!finderActive && (

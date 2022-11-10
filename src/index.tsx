@@ -3,14 +3,31 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import FirebaseProvider from './components/FirebaseProvider'
-
+import FirebaseProvider from './components/FirebaseProvider';
+import {Routes, Route, BrowserRouter} from 'react-router-dom';
 
 ReactDOM.render(
   <React.StrictMode>
-    <FirebaseProvider>
-      <App />
-    </FirebaseProvider>
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/women"
+          element={
+            <FirebaseProvider men={false}>
+              <App />
+            </FirebaseProvider>
+          }
+        ></Route>
+        <Route
+          path="*"
+          element={
+            <FirebaseProvider men>
+              <App />
+            </FirebaseProvider>
+          }
+        ></Route>
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );

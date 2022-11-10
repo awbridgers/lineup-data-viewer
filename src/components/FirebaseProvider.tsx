@@ -7,15 +7,17 @@ import {parseData, parsePlayers} from '../util/parseGames';
 
 interface IProvider {
   children: ReactNode;
+  men: boolean;
 }
 export const FirebaseContext = createContext<totalData | undefined>({});
 
-const FirebaseProvider = ({children}: IProvider) => {
+const FirebaseProvider = ({children, men}: IProvider) => {
   const [data, setData] = useState<totalData>();
   useEffect(() => {
     const fetchData = async () => {
       const db = getDatabase(firebase);
-      const lineupRef = ref(db, 'lineupData');
+      const type = men ? 'men' : 'women'
+      const lineupRef = ref(db, `lineupData/${type}`);
       const data = await get(lineupRef);
       let results: {[key: string]: any} = {};
       data.forEach((year) => {
