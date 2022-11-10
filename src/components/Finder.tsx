@@ -130,7 +130,7 @@ const Styles = styled.div`
   margin: auto;
   color: black;
   text-align: center;
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

@@ -225,6 +225,17 @@ h1 {
   font-weight: bold;
   margin: 5px;
 }
+.back{
+  color: black;
+  background-color: #cfb53b;
+  cursor: pointer;
+  border-radius: 6px;
+  height: 40px;
+}
+.back:hover{
+ background-color: #73600e;
+
+}
 
 @media only screen and (max-width: 767px)  {
   /* mobile layout here */
