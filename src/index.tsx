@@ -4,11 +4,11 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import FirebaseProvider from './components/FirebaseProvider';
-import {Routes, Route, BrowserRouter} from 'react-router-dom';
+import {Routes, Route, HashRouter} from 'react-router-dom';
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route
           path="/women"
@@ -27,7 +27,7 @@ ReactDOM.render(
           }
         ></Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
