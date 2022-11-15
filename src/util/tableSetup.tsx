@@ -849,6 +849,7 @@ export const advanced = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'Poss',
     accessor: 'possessions',
+    Cell: ({value})=>Math.floor(value),
     sortDescFirst: true,
     sortType: sortNumbers,
     Footer: (info) => {
@@ -860,7 +861,7 @@ export const advanced = (isMobile: boolean): Array<Column<Lineup>> => [
           ),
         [info.rows]
       );
-      return <>{total}</>;
+      return <>{Math.floor(total)}</>;
     },
   },
   {
