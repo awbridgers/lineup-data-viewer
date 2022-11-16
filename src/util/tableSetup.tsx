@@ -849,7 +849,7 @@ export const advanced = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'Poss',
     accessor: 'possessions',
-    Cell: ({value})=>Math.floor(value),
+    Cell: ({value})=>Math.round(value),
     sortDescFirst: true,
     sortType: sortNumbers,
     Footer: (info) => {
