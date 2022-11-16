@@ -887,7 +887,7 @@ export const advanced = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'D RTG',
     accessor: 'dRating',
-    sortDescFirst: true,
+    sortDescFirst: false,
     sortType: sortNumbers,
     Footer: (info) => {
       const total = useMemo(() => {
@@ -908,7 +908,7 @@ export const advanced = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'ORB%',
     accessor: 'oRebPercent',
-    disableSortBy: true,
+    disableSortBy: false,
     Cell: ({value}) => value.toFixed(2),
     sortDescFirst: true,
     sortType: sortNumbers,
@@ -930,7 +930,7 @@ export const advanced = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'DRB%',
     accessor: 'dRebPercent',
-    disableSortBy: true,
+    disableSortBy: false,
     Cell: ({value}) => value.toFixed(2),
     sortDescFirst: true,
     sortType: sortNumbers,

@@ -167,18 +167,18 @@ export class Lineup {
   get oRebPercent() {
     //Percent of missed shots that were O-rebounded by team.
     const {attemptedFor, madeFor} = this.totalShots;
-    return this.oRebFor / (attemptedFor - madeFor);
+    return attemptedFor - madeFor === 0 ? 0 : this.oRebFor / (attemptedFor - madeFor);
   }
   get dRebPercent() {
     //Percent of missed shots that were D-rebounded by team.
     const {attemptedAgainst, madeAgainst} = this.totalShots;
-    return this.dRebFor / (attemptedAgainst - madeAgainst);
+    return attemptedAgainst - madeAgainst === 0 ? 0 : this.dRebFor / (attemptedAgainst - madeAgainst);
   }
   get assistPerFG() {
     const {madeFor} = this.totalShots;
-    return this.assistsFor / madeFor;
+    return madeFor === 0 ? 0 : this.assistsFor / madeFor;
   }
   get assistTurnoverRatio() {
-    return this.assistsFor / this.turnoversFor;
+    return this.turnoversFor === 0 ? 0 : this.assistsFor / this.turnoversFor;
   }
 }
