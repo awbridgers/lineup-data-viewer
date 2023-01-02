@@ -127,12 +127,12 @@ export class Lineup {
     //FGA-OR + TO + .44*FTA
     const {attemptedFor, attemptedAgainst} = this.totalShots;
     const possFor =
-      attemptedFor - this.oRebFor + this.turnoversFor + (0.42 * this.ftaFor);
+      attemptedFor - this.oRebFor + this.turnoversFor + (0.44 * this.ftaFor);
     const possAgainst =
       attemptedAgainst -
       this.oRebAgainst +
       this.turnoversAgainst +
-      (0.42 * this.ftaAgainst);
+      (0.44 * this.ftaAgainst);
     //because lineups can change between possessions, just average out the possessions of off and def.
     return (possAgainst + possFor) / 2;
   }
