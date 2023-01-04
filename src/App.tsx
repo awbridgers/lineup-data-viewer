@@ -8,6 +8,7 @@ import Table from './components/Table';
 import Finder from './components/Finder';
 import { getLatestYear } from './util/getLatestYear';
 import { getYearlyData } from './util/yearlyData';
+import PlayerReport from './components/Report';
 
 interface Iprops {
   data: seasonData;
@@ -111,6 +112,7 @@ const App = () => {
         changeFinderActive = {cancel}
       />
       <Table data={finderActive ? finderData : sortedData} type={selectedStat} />
+      <PlayerReport data={data[selectedYear]}/>
       {showFinder && (
         <Finder
           year={selectedYear}
