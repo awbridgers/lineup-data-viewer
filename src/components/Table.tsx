@@ -1,22 +1,29 @@
 import {useMemo} from 'react';
 import {Lineup} from '../lineupClass';
 import {total, net, advanced, shooting, csvHeaders} from '../util/tableSetup';
-import {Column, useBlockLayout, useTable, useSortBy, useFlexLayout} from 'react-table';
+import {
+  Column,
+  useBlockLayout,
+  useTable,
+  useSortBy,
+  useFlexLayout,
+} from 'react-table';
 import {CSVLink} from 'react-csv';
-import { TableStyle } from "../styles/table";
-import { useMediaQuery } from 'react-responsive';
-import { useSticky } from 'react-table-sticky';
+import {TableStyle} from '../styles/table';
+import {useMediaQuery} from 'react-responsive';
+import {useSticky} from 'react-table-sticky';
 
 import styled from 'styled-components';
 
 interface iProps {
   data: Lineup[];
   type: string;
+  onClick? : ()=>void
 }
 
-const Table = ({data, type}: iProps) => {
+const Table = ({data, type, onClick}: iProps) => {
   const tableData = useMemo<Lineup[]>(() => data, [data]);
-  const isMobile = useMediaQuery({maxWidth: '767px'})
+  const isMobile = useMediaQuery({maxWidth: '767px'});
 
   const tableColumns = useMemo<Column<Lineup>[]>(() => {
     switch (type) {
@@ -36,7 +43,7 @@ const Table = ({data, type}: iProps) => {
     () => ({
       // When using the useFlexLayout:
       minWidth: 0, // minWidth is only used as a limit for resizing
-      width:  isMobile ? 15 : 30, // width is used for both the flex-basis and flex-grow
+      width: isMobile ? 15 : 30, // width is used for both the flex-basis and flex-grow
       maxWidth: isMobile ? 80 : 200, // maxWidth is only used as a limit for resizing
     }),
     []
@@ -66,7 +73,11 @@ const Table = ({data, type}: iProps) => {
                   className={`th ${column.className}`}
                 >
                   {column.id === 'players_placeholder_0' && type === 'total' ? (
-                    <CSVLink headers={csvHeaders} data={rows}>Download</CSVLink>
+                    <CSVLink headers={csvHeaders} data={rows}>
+                      Download
+                    </CSVLink>
+                  ) : column.id === 'time_placeholder_1' && type === 'total' ? (
+                    <div style = {{cursor: 'pointer'}} onClick = {onClick}>Report</div>
                   ) : (
                     column.render('Header')
                   )}
@@ -81,7 +92,10 @@ const Table = ({data, type}: iProps) => {
             return (
               <div {...row.getRowProps()} className="tr">
                 {row.cells.map((cell) => (
-                  <div {...cell.getCellProps()}  className={`td ${cell.column.className}`}>
+                  <div
+                    {...cell.getCellProps()}
+                    className={`td ${cell.column.className}`}
+                  >
                     {cell.render('Cell')}
                   </div>
                 ))}
@@ -107,7 +121,5 @@ const Table = ({data, type}: iProps) => {
     </TableStyle>
   );
 };
-
-
 
 export default Table;

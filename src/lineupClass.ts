@@ -174,6 +174,12 @@ export class Lineup {
     const {attemptedAgainst, madeAgainst} = this.totalShots;
     return attemptedAgainst - madeAgainst === 0 ? 0 : this.dRebFor / (attemptedAgainst - madeAgainst);
   }
+  get totalRebPercent(){
+    const{attemptedAgainst, madeAgainst, madeFor, attemptedFor} = this.totalShots
+    const possibleRebs = (attemptedAgainst - madeAgainst) + (attemptedFor-madeFor);
+    const totalRebs = this.oRebFor + this.dRebFor;
+    return possibleRebs === 0 ? 0 : totalRebs/possibleRebs
+  }
   get assistPerFG() {
     const {madeFor} = this.totalShots;
     return madeFor === 0 ? 0 : this.assistsFor / madeFor;

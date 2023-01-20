@@ -861,7 +861,7 @@ export const advanced = (isMobile: boolean): Array<Column<Lineup>> => [
           ),
         [info.rows]
       );
-      return <>{Math.floor(total)}</>;
+      return <>{Math.round(total)}</>;
     },
   },
   {

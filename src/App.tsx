@@ -34,6 +34,7 @@ const App = () => {
   const [selectedGroup, setSelectedGroup] = useState<group>('lineups')
   const [showFinder, setShowFinder] = useState<boolean>(false);
   const [finderActive, setFinderActive] = useState<boolean>(false)
+  const [showReport, setShowReport] = useState(false)
   const [finderPlayers, setFinderPlayers] =
     useState<finderPlayer[]>(defaultFinder);
 
@@ -111,8 +112,8 @@ const App = () => {
         finderActive = {finderActive}
         changeFinderActive = {cancel}
       />
-      <Table data={finderActive ? finderData : sortedData} type={selectedStat} />
-      <PlayerReport data={data[selectedYear]}/>
+      <Table data={finderActive ? finderData : sortedData} type={selectedStat} onClick = {()=>setShowReport(true)} />
+      {showReport && <PlayerReport data={data[selectedYear]} back = {()=>setShowReport(false)}/>}
       {showFinder && (
         <Finder
           year={selectedYear}
