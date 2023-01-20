@@ -8,6 +8,7 @@ import Table from './components/Table';
 import Finder from './components/Finder';
 import { getLatestYear } from './util/getLatestYear';
 import { getYearlyData } from './util/yearlyData';
+import PlayerReport from './components/Report';
 
 interface Iprops {
   data: seasonData;
@@ -33,6 +34,7 @@ const App = () => {
   const [selectedGroup, setSelectedGroup] = useState<group>('lineups')
   const [showFinder, setShowFinder] = useState<boolean>(false);
   const [finderActive, setFinderActive] = useState<boolean>(false)
+  const [showReport, setShowReport] = useState(false)
   const [finderPlayers, setFinderPlayers] =
     useState<finderPlayer[]>(defaultFinder);
 
@@ -110,7 +112,8 @@ const App = () => {
         finderActive = {finderActive}
         changeFinderActive = {cancel}
       />
-      <Table data={finderActive ? finderData : sortedData} type={selectedStat} />
+      <Table data={finderActive ? finderData : sortedData} type={selectedStat} onClick = {()=>setShowReport(true)} />
+      {showReport && <PlayerReport data={data[selectedYear]} back = {()=>setShowReport(false)}/>}
       {showFinder && (
         <Finder
           year={selectedYear}
