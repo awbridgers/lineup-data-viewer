@@ -19,6 +19,7 @@ export interface gameData {
 export interface gameStats{
   lineups: Lineup[];
   players: Lineup[];
+  count: number;
 }
 
 export interface seasonData {

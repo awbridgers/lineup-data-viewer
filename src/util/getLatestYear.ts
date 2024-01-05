@@ -8,6 +8,6 @@ export const getLatestYear = (data:totalData) : string =>{
     const yearB = +b.slice(0,4);
     return yearB - yearA
   })
-  console.log(sorted)
+  //console.log(sorted)
   return sorted
 }

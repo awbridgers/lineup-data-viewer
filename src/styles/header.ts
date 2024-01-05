@@ -5,9 +5,10 @@ export const HeaderStyle = styled.div`
   height: auto;
   width: 100%;
   display: flex;
+  flex-direction: row wrap;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 10px;
+  
 
   .headerGameControls {
     display: flex;
@@ -104,6 +105,10 @@ export const HeaderStyle = styled.div`
   .selectContainer {
     display: flex;
   }
+  .switch{
+    color: white;
+    
+  }
   @media screen and (max-width: 850px) {
     .playerSwitch button,
     .headerFinder button {
@@ -160,3 +165,10 @@ export const HeaderStyle = styled.div`
     }
   }
 `;
+
+export const Filter = styled.div`
+  color: white;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+`
