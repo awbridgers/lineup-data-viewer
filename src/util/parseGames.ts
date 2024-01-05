@@ -19,7 +19,8 @@ export const parseData = (games: gameData[], conference: boolean): gameStats => 
   });
   return ({
     lineups: lineupData,
-    players: parsePlayers(lineupData)
+    players: parsePlayers(lineupData),
+    count: gameData.length
   });
 };
 

@@ -18,7 +18,7 @@ const sortNumbers = (
   desc?:boolean
 ): number => {
   const isDesc = desc ? desc : false;
-  console.log(isDesc)
+  //console.log(isDesc)
   const a = +rowA.values[id];
   const b = +rowB.values[id];
     //take care of dividing by 0 for percentages
@@ -39,7 +39,7 @@ export const total = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'Lineup',
     accessor: 'players',
-    Cell: ({value}) => value.replace(/-/g, '\n'),
+    Cell: ({value}) => <>{value.replace(/-/g, '\n')}</>,
     className: 'pre',
     disableSortBy: true,
     sticky: 'left',
@@ -54,7 +54,7 @@ export const total = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'Time',
     accessor: 'time',
-    Cell: ({value}) => fixTime(value),
+    Cell: ({value}) => <>{fixTime(value)}</>,
     width: isMobile ? 25 : 50,
     sortDescFirst: true,
     sortType: sortNumbers,
@@ -233,7 +233,7 @@ export const total = (isMobile: boolean): Array<Column<Lineup>> => [
       //   Header: '3P%',
       //   accessor: 'threePercentFor',
       //   sortDescFirst: true, sortType: sortNumbers,
-      //   Cell: ({value}) => value.toFixed(2),
+      //   Cell: ({value}) => <>{value.toFixed(2)}</>,
       //   Footer: (info) => {
       //     const total = useMemo(
       //       () =>
@@ -448,7 +448,7 @@ export const total = (isMobile: boolean): Array<Column<Lineup>> => [
       //   Header: '2P%',
       //   accessor: 'twoPercentAgainst',
       //   sortDescFirst: true, sortType: sortNumbers,
-      //   Cell: ({value}) => value.toFixed(2),
+      //   Cell: ({value}) => <>{value.toFixed(2)}</>,
       //   Footer: (info) => {
       //     const total = useMemo(
       //       () =>
@@ -499,7 +499,7 @@ export const total = (isMobile: boolean): Array<Column<Lineup>> => [
       //   Header: '3P%',
       //   accessor: 'threePercentAgainst',
       //   sortDescFirst: true, sortType: sortNumbers,
-      //   Cell: ({value}) => value.toFixed(2),
+      //   Cell: ({value}) => <>{value.toFixed(2)}</>,
       //   Footer: (info) => {
       //     const total = useMemo(
       //       () =>
@@ -592,7 +592,7 @@ export const net = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'Lineup',
     accessor: 'players',
-    Cell: ({value}) => value.replace(/-/g, '\n'),
+    Cell: ({value}) => <>{value.replace(/-/g, '\n')}</>,
     className: 'pre',
     sticky: 'left',
     width: isMobile ? 55 : 140,
@@ -607,7 +607,7 @@ export const net = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'Time',
     accessor: 'time',
-    Cell: ({value}) => fixTime(value),
+    Cell: ({value}) => <>{fixTime(value)}</>,
     width: isMobile ? 20 : 60,
     sortDescFirst: true,
     sortType: sortNumbers,
@@ -623,7 +623,7 @@ export const net = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'Pts',
     accessor: 'netPoints',
-    Cell: ({value}) => format.format(value),
+    Cell: ({value}) => <>{format.format(value)}</>,
     sortDescFirst: true,
     sortType: sortNumbers,
     Footer: (info) => {
@@ -641,7 +641,7 @@ export const net = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'DRb',
     accessor: 'netDRebounds',
-    Cell: ({value}) => format.format(value),
+    Cell: ({value}) => <>{format.format(value)}</>,
     sortDescFirst: true,
     sortType: sortNumbers,
 
@@ -660,7 +660,7 @@ export const net = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'ORb',
     accessor: 'netORebounds',
-    Cell: ({value}) => format.format(value),
+    Cell: ({value}) => <>{format.format(value)}</>,
     sortDescFirst: true,
     sortType: sortNumbers,
 
@@ -679,7 +679,7 @@ export const net = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: '2PM',
     accessor: 'netMadeTwos',
-    Cell: ({value}) => format.format(value),
+    Cell: ({value}) => <>{format.format(value)}</>,
     sortDescFirst: true,
     sortType: sortNumbers,
 
@@ -698,7 +698,7 @@ export const net = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: '2PA',
     accessor: 'netAttemptedTwos',
-    Cell: ({value}) => format.format(value),
+    Cell: ({value}) => <>{format.format(value)}</>,
     sortDescFirst: true,
     sortType: sortNumbers,
 
@@ -717,7 +717,7 @@ export const net = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: '3PM',
     accessor: 'netMadeThrees',
-    Cell: ({value}) => format.format(value),
+    Cell: ({value}) => <>{format.format(value)}</>,
     sortDescFirst: true,
     sortType: sortNumbers,
 
@@ -736,7 +736,7 @@ export const net = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: '3PA',
     accessor: 'netAttemptedThrees',
-    Cell: ({value}) => format.format(value),
+    Cell: ({value}) => <>{format.format(value)}</>,
     sortDescFirst: true,
     sortType: sortNumbers,
 
@@ -755,7 +755,7 @@ export const net = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'Pnt',
     accessor: 'netPaint',
-    Cell: ({value}) => format.format(value),
+    Cell: ({value}) => <>{format.format(value)}</>,
     sortDescFirst: true,
     sortType: sortNumbers,
 
@@ -774,7 +774,7 @@ export const net = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: '2nd',
     accessor: 'netSecond',
-    Cell: ({value}) => format.format(value),
+    Cell: ({value}) => <>{format.format(value)}</>,
     sortDescFirst: true,
     sortType: sortNumbers,
 
@@ -793,7 +793,7 @@ export const net = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'Ast',
     accessor: 'netAssists',
-    Cell: ({value}) => format.format(value),
+    Cell: ({value}) => <>{format.format(value)}</>,
     sortDescFirst: true,
     sortType: sortNumbers,
 
@@ -812,7 +812,7 @@ export const net = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'TO',
     accessor: 'netTurnovers',
-    Cell: ({value}) => format.format(value),
+    Cell: ({value}) => <>{format.format(value)}</>,
     sortDescFirst: true,
     sortType: sortNumbers,
 
@@ -834,7 +834,7 @@ export const advanced = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'Lineup',
     accessor: 'players',
-    Cell: ({value}) => value.replace(/-/g, '\n'),
+    Cell: ({value}) => <>{value.replace(/-/g, '\n')}</>,
     className: 'pre',
     disableSortBy: true,
     width: isMobile ? 55 : 140,
@@ -849,7 +849,7 @@ export const advanced = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'Poss',
     accessor: 'possessions',
-    Cell: ({value})=>Math.round(value),
+    Cell: ({value})=><>{Math.round(value)}</>,
     sortDescFirst: true,
     sortType: sortNumbers,
     Footer: (info) => {
@@ -909,7 +909,7 @@ export const advanced = (isMobile: boolean): Array<Column<Lineup>> => [
     Header: 'ORB%',
     accessor: 'oRebPercent',
     disableSortBy: false,
-    Cell: ({value}) => value.toFixed(2),
+    Cell: ({value}) => <>{value.toFixed(2)}</>,
     sortDescFirst: true,
     sortType: sortNumbers,
     Footer: (info) => {
@@ -931,7 +931,7 @@ export const advanced = (isMobile: boolean): Array<Column<Lineup>> => [
     Header: 'DRB%',
     accessor: 'dRebPercent',
     disableSortBy: false,
-    Cell: ({value}) => value.toFixed(2),
+    Cell: ({value}) => <>{value.toFixed(2)}</>,
     sortDescFirst: true,
     sortType: sortNumbers,
     Footer: (info) => {
@@ -953,7 +953,7 @@ export const advanced = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'AST %',
     accessor: 'assistPerFG',
-    Cell: ({value}) => value.toFixed(2),
+    Cell: ({value}) => <>{value.toFixed(2)}</>,
     sortDescFirst: true,
     sortType: sortNumbers,
     Footer: (info) => {
@@ -974,7 +974,7 @@ export const advanced = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'A/P',
     accessor: 'assistsPerPoss',
-    Cell: ({value}) => value.toFixed(2),
+    Cell: ({value}) => <>{value.toFixed(2)}</>,
     sortDescFirst: true,
     sortType: sortNumbers,
     Footer: (info) => {
@@ -995,7 +995,7 @@ export const advanced = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'A/TO',
     accessor: 'assistTurnoverRatio',
-    Cell: ({value}) => value.toFixed(2),
+    Cell: ({value}) => <>{value.toFixed(2)}</>,
     sortDescFirst: true,
     sortType: sortNumbers,
     Footer: (info) => {
@@ -1016,7 +1016,7 @@ export const advanced = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'TO/P',
     accessor: 'turnoversPerPoss',
-    Cell: ({value}) => value.toFixed(2),
+    Cell: ({value}) => <>{value.toFixed(2)}</>,
     sortDescFirst: true,
     sortType: sortNumbers,
     Footer: (info) => {
@@ -1040,7 +1040,7 @@ export const shooting = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'Lineup',
     accessor: 'players',
-    Cell: ({value}) => value.replace(/-/g, '\n'),
+    Cell: ({value}) => <>{value.replace(/-/g, '\n')}</>,
     className: 'pre',
     disableSortBy: true,
     width: isMobile ? 55 : 150,
@@ -1095,7 +1095,7 @@ export const shooting = (isMobile: boolean): Array<Column<Lineup>> => [
       {
         Header: 'FG%',
         accessor: 'fgPercentFor',
-        Cell: ({value}) => value.toFixed(2),
+        Cell: ({value}) => <>{value.toFixed(2)}</>,
         sortDescFirst: true,
         sortType: sortNumbers,
         Footer: (info) => {
@@ -1153,7 +1153,7 @@ export const shooting = (isMobile: boolean): Array<Column<Lineup>> => [
       {
         Header: '2P%',
         accessor: 'twoPercentFor',
-        Cell: ({value}) => value.toFixed(2),
+        Cell: ({value}) => <>{value.toFixed(2)}</>,
         sortDescFirst: true,
         sortType: sortNumbers,
         Footer: (info) => {
@@ -1210,7 +1210,7 @@ export const shooting = (isMobile: boolean): Array<Column<Lineup>> => [
         accessor: 'threePercentFor',
         sortDescFirst: true,
         sortType: sortNumbers,
-        Cell: ({value}) => value.toFixed(2),
+        Cell: ({value}) => <>{value.toFixed(2)}</>,
         Footer: (info) => {
           const total = useMemo(() => {
             const made = info.rows.reduce(
@@ -1229,7 +1229,7 @@ export const shooting = (isMobile: boolean): Array<Column<Lineup>> => [
       {
         Header: 'eFG%',
         accessor: 'eFGFor',
-        Cell: ({value}) => value.toFixed(2),
+        Cell: ({value}) => <>{value.toFixed(2)}</>,
         sortDescFirst: true,
         sortType: sortNumbers,
         Footer: (info) => {
@@ -1257,7 +1257,7 @@ export const shooting = (isMobile: boolean): Array<Column<Lineup>> => [
         accessor: 'threeARFor',
         sortDescFirst: true,
         sortType: sortNumbers,
-        Cell: ({value}) => value.toFixed(2),
+        Cell: ({value}) => <>{value.toFixed(2)}</>,
         Footer: (info) => {
           const total = useMemo(() => {
             const threes = info.rows.reduce(
@@ -1319,7 +1319,7 @@ export const shooting = (isMobile: boolean): Array<Column<Lineup>> => [
       {
         Header: 'FG%',
         accessor: 'fgPercentAgainst',
-        Cell: ({value}) => value.toFixed(2),
+        Cell: ({value}) => <>{value.toFixed(2)}</>,
         sortDescFirst: true,
         sortType: sortNumbers,
         Footer: (info) => {
@@ -1377,7 +1377,7 @@ export const shooting = (isMobile: boolean): Array<Column<Lineup>> => [
       {
         Header: '2P%',
         accessor: 'twoPercentAgainst',
-        Cell: ({value}) => value.toFixed(2),
+        Cell: ({value}) => <>{value.toFixed(2)}</>,
         sortDescFirst: true,
         sortType: sortNumbers,
         Footer: (info) => {
@@ -1434,7 +1434,7 @@ export const shooting = (isMobile: boolean): Array<Column<Lineup>> => [
         accessor: 'threePercentAgainst',
         sortDescFirst: true,
         sortType: sortNumbers,
-        Cell: ({value}) => value.toFixed(2),
+        Cell: ({value}) => <>{value.toFixed(2)}</>,
         Footer: (info) => {
           const total = useMemo(() => {
             const made = info.rows.reduce(
@@ -1453,7 +1453,7 @@ export const shooting = (isMobile: boolean): Array<Column<Lineup>> => [
       {
         Header: 'eFG%',
         accessor: 'eFGAgainst',
-        Cell: ({value}) => value.toFixed(2),
+        Cell: ({value}) => <>{value.toFixed(2)}</>,
         sortDescFirst: true,
         sortType: sortNumbers,
         Footer: (info) => {
@@ -1481,7 +1481,7 @@ export const shooting = (isMobile: boolean): Array<Column<Lineup>> => [
         accessor: 'threeARAgainst',
         sortDescFirst: true,
         sortType: sortNumbers,
-        Cell: ({value}) => value.toFixed(2),
+        Cell: ({value}) => <>{value.toFixed(2)}</>,
         Footer: (info) => {
           const total = useMemo(() => {
             const threes = info.rows.reduce(

@@ -18,11 +18,13 @@ import styled from 'styled-components';
 interface iProps {
   data: Lineup[];
   type: string;
-  onClick? : ()=>void
+  onClick? : ()=>void;
+  filter: boolean;
+  count: number;
 }
 
-const Table = ({data, type, onClick}: iProps) => {
-  const tableData = useMemo<Lineup[]>(() => data, [data]);
+const Table = ({data, type, onClick, filter, count}: iProps) => {
+  const tableData = useMemo<Lineup[]>(() => data.filter((x)=>x.possessions > count || !filter), [data, count, filter]);
   const isMobile = useMediaQuery({maxWidth: '767px'});
 
   const tableColumns = useMemo<Column<Lineup>[]>(() => {
@@ -38,7 +40,7 @@ const Table = ({data, type, onClick}: iProps) => {
       default:
         return total(isMobile);
     }
-  }, [type]);
+  }, [type, isMobile]);
   const defaultColumn = useMemo(
     () => ({
       // When using the useFlexLayout:

@@ -40,7 +40,7 @@ const FirebaseProvider = ({children, men}: IProvider) => {
             accGame: game.val().accGame,
             game: game.key!.replace(/_/g, ' '),
             stats: {
-              lineups, players: parsePlayers(lineups)
+              lineups, players: parsePlayers(lineups), count: 1
             }
             
           });

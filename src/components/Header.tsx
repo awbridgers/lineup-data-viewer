@@ -4,7 +4,7 @@ import {gameData, group, seasonData} from '../types';
 import Switch from 'react-switch';
 import '../App.css';
 import {Lineup} from '../lineupClass';
-import {HeaderStyle} from '../styles/header'
+import {Filter, HeaderStyle} from '../styles/header';
 
 interface iProps {
   games: gameData[];
@@ -14,12 +14,14 @@ interface iProps {
   selectedStat: string;
   finderActive: boolean;
   selectedGroup: string;
-  changeGroup: Dispatch<SetStateAction<group>>
+  changeGroup: Dispatch<SetStateAction<group>>;
   changeYear: (picked: string) => void;
   changeGame: Dispatch<SetStateAction<number>>;
   changeStat: Dispatch<SetStateAction<string>>;
   changeShowFinder: Dispatch<SetStateAction<boolean>>;
   changeFinderActive: () => void;
+  filter: boolean;
+  setFilter: Dispatch<SetStateAction<boolean>>;
 }
 interface gameChoice {
   label: string;
@@ -56,11 +58,11 @@ const statOptions: statChoice[] = [
     value: 'shooting',
   },
 ];
-const groupOptions:groupChoice[] = [
+const groupOptions: groupChoice[] = [
   {value: 'lineups', label: 'Lineups'},
   {value: 'players', label: 'Players'},
-  {value: 'yearly', label: 'Year to Year'}
-]
+  {value: 'yearly', label: 'Year to Year'},
+];
 
 //custom control compononet for select
 const Control = (props: any) => {
@@ -86,6 +88,8 @@ const Header = ({
   changeStat,
   changeShowFinder,
   changeFinderActive,
+  filter,
+  setFilter,
 }: iProps) => {
   const [gameOptions, setGameOptions] = useState<gameChoice[]>([]);
   const [yearOptions, setyearOptions] = useState<yearChoice[]>([]);
@@ -104,13 +108,14 @@ const Header = ({
         value: year,
       }))
       .sort((a, b) => {
-        const yearA = +a.value.slice(0,4)
-        const yearB = +b.value.slice(0,4);
-        return yearB-yearA
+        const yearA = +a.value.slice(0, 4);
+        const yearB = +b.value.slice(0, 4);
+        return yearB - yearA;
       });
     setyearOptions(yearOptions);
   }, [years]);
   return (
+    <div style = {{'paddingBottom': '10px'}}>
     <HeaderStyle>
       <div className="headerYearControls">
         <div className="selectContainer">
@@ -143,9 +148,14 @@ const Header = ({
       </div>
       <div className="headerGameControls">
         {finderActive && (
-          <div className="gameInfo" style = {{display:'flex', flexFlow: 'column'}}>
+          <div
+            className="gameInfo"
+            style={{display: 'flex', flexFlow: 'column'}}
+          >
             <div className="totals">Lineup Finder</div>
-            <button className = 'back' onClick={changeFinderActive}>Exit Finder</button>
+            <button className="back" onClick={changeFinderActive}>
+              Exit Finder
+            </button>
           </div>
         )}
         {!finderActive && (
@@ -164,6 +174,7 @@ const Header = ({
             )}
           </div>
         )}
+        
         <div className="selectContainer">
           <Select<gameChoice>
             options={gameOptions}
@@ -214,7 +225,7 @@ const Header = ({
           />
         </div>
         <div className="playerSwitch">
-        <Select<groupChoice>
+          <Select<groupChoice>
             options={groupOptions}
             value={groupOptions.find((x) => x.value === selectedGroup)}
             onChange={(picked) =>
@@ -225,7 +236,7 @@ const Header = ({
             className="group select"
             isSearchable={false}
             isClearable={false}
-            isDisabled = {finderActive}
+            isDisabled={finderActive}
             getOptionLabel={(option) => option.label}
             getOptionValue={(option) => option.value}
             styles={{
@@ -239,6 +250,19 @@ const Header = ({
         </div>
       </div>
     </HeaderStyle>
+    {selectedGame < 0 && (
+          <Filter>
+            <label style = {{margin: '0px 5px'}}>Poss Limit</label>
+              <Switch
+                checked={filter}
+                onChange={(checked) => setFilter(checked)}
+                height={20}
+                width = {35}
+                handleDiameter={18}
+              />
+          </Filter>
+        )}
+    </div>
   );
 };
 

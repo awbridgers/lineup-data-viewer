@@ -6,8 +6,8 @@ import {finderPlayer, group, seasonData, totalData} from './types';
 import Header from './components/Header';
 import Table from './components/Table';
 import Finder from './components/Finder';
-import { getLatestYear } from './util/getLatestYear';
-import { getYearlyData } from './util/yearlyData';
+import {getLatestYear} from './util/getLatestYear';
+import {getYearlyData} from './util/yearlyData';
 import PlayerReport from './components/Report';
 
 interface Iprops {
@@ -26,15 +26,16 @@ const App = () => {
   const data = useContext(FirebaseContext);
   //state variables
   const [sortedData, setSortedData] = useState<Lineup[]>([]);
-  const [finderData, setFinderData] = useState<Lineup[]>([])
+  const [finderData, setFinderData] = useState<Lineup[]>([]);
   const [selectedYear, setSelectedYear] = useState<string>('');
   //games are order 0-32 so using -2 for season and -1 for conference totals
   const [selectedGame, setSelectedGame] = useState<number>(-2);
   const [selectedStat, setSelectedStat] = useState<string>('total');
-  const [selectedGroup, setSelectedGroup] = useState<group>('lineups')
+  const [selectedGroup, setSelectedGroup] = useState<group>('lineups');
   const [showFinder, setShowFinder] = useState<boolean>(false);
-  const [finderActive, setFinderActive] = useState<boolean>(false)
-  const [showReport, setShowReport] = useState(false)
+  const [finderActive, setFinderActive] = useState<boolean>(false);
+  const [showReport, setShowReport] = useState<boolean>(false);
+  const [filterPoss, setFilterPoss] = useState<boolean>(true);
   const [finderPlayers, setFinderPlayers] =
     useState<finderPlayer[]>(defaultFinder);
 
@@ -45,53 +46,54 @@ const App = () => {
   const cancel = () => {
     setShowFinder(false);
     setFinderPlayers(defaultFinder);
-    setFinderActive(false)
+    setFinderActive(false);
   };
   const findLineups = () => {
     //split the players into omitted and included
-    const include = finderPlayers.filter((x) => x.type === 'include' && x.name !== '');
-    const omit = finderPlayers.filter((x) => x.type === 'omit' && x.name!=='');
-    console.log(include)
+    const include = finderPlayers.filter(
+      (x) => x.type === 'include' && x.name !== ''
+    );
+    const omit = finderPlayers.filter(
+      (x) => x.type === 'omit' && x.name !== ''
+    );
+    console.log(include);
     const found = sortedData
       .filter((lineups) =>
         include.every((name) => lineups.players.includes(name.name))
       )
       .filter((lineups) =>
-       omit.every((name) => !lineups.players.includes(name.name))
+        omit.every((name) => !lineups.players.includes(name.name))
       );
-      setFinderData(found);
-      setShowFinder(false)
-      setFinderActive(true)
+    setFinderData(found);
+    setShowFinder(false);
+    setFinderActive(true);
   };
   //selected the most current year on launch
-  useEffect(()=>{
-    if(data){
-      if(!selectedYear){
-        setSelectedYear(getLatestYear(data))
-      }
-    }
-  },[data])
   useEffect(() => {
-    
-    if (data && selectedYear) {
-      if(selectedGroup === 'yearly'){
-        setSortedData(getYearlyData(data))
+    if (data) {
+      if (!selectedYear) {
+        setSelectedYear(getLatestYear(data));
       }
-      else{
-        const playerOrTeam = selectedGroup
-      const year = data[selectedYear];
-      const unsorted =
-        selectedGame === -2
-          ? year.season[playerOrTeam]
-          : selectedGame === -1
-          ? year.conference[playerOrTeam]
-          : year.games[selectedGame].stats[playerOrTeam];
-      const sorted = unsorted.sort((a, b) => b.time - a.time);
-      setSortedData(sorted);
-      }
-      
     }
-  }, [data, selectedGame, selectedYear, selectedGroup]);
+  }, [data]);
+  useEffect(() => {
+    if (data && selectedYear) {
+      if (selectedGroup === 'yearly') {
+        setSortedData(getYearlyData(data));
+      } else {
+        const playerOrTeam = selectedGroup;
+        const year = data[selectedYear];
+        const unsorted =
+          selectedGame === -2
+            ? year.season[playerOrTeam]
+            : selectedGame === -1
+            ? year.conference[playerOrTeam]
+            : year.games[selectedGame].stats[playerOrTeam];
+        const sorted = unsorted.sort((a, b) => b.time - a.time);
+        setSortedData(sorted);
+      }
+    }
+  }, [data, selectedGame, selectedYear, selectedGroup, filterPoss]);
   if (!data || !selectedYear) {
     return <div>Loading...</div>;
   }
@@ -103,24 +105,43 @@ const App = () => {
         selectedStat={selectedStat}
         games={data[selectedYear].games}
         years={Object.keys(data)}
-        selectedGroup = {selectedGroup}
+        selectedGroup={selectedGroup}
         changeShowFinder={setShowFinder}
         changeYear={changeYear}
         changeGame={setSelectedGame}
         changeStat={setSelectedStat}
-        changeGroup = {setSelectedGroup}
-        finderActive = {finderActive}
-        changeFinderActive = {cancel}
+        changeGroup={setSelectedGroup}
+        finderActive={finderActive}
+        changeFinderActive={cancel}
+        filter={filterPoss}
+        setFilter={setFilterPoss}
       />
-      <Table data={finderActive ? finderData : sortedData} type={selectedStat} onClick = {()=>setShowReport(true)} />
-      {showReport && <PlayerReport data={data[selectedYear]} back = {()=>setShowReport(false)}/>}
+      <Table
+        data={finderActive ? finderData : sortedData}
+        type={selectedStat}
+        onClick={() => setShowReport(true)}
+        filter={filterPoss}
+        count={
+          selectedGame === -2
+            ? data[selectedYear].season.count
+            : selectedGame === -1
+            ? data[selectedYear].conference.count
+            : 1
+        }
+      />
+      {showReport && (
+        <PlayerReport
+          data={data[selectedYear]}
+          back={() => setShowReport(false)}
+        />
+      )}
       {showFinder && (
         <Finder
           year={selectedYear}
           players={finderPlayers}
           changePlayers={setFinderPlayers}
-          cancel={()=>setShowFinder(false)}
-          submit = {findLineups}
+          cancel={() => setShowFinder(false)}
+          submit={findLineups}
         />
       )}
     </div>
