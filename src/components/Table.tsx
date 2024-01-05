@@ -24,7 +24,7 @@ interface iProps {
 }
 
 const Table = ({data, type, onClick, filter, count}: iProps) => {
-  const tableData = useMemo<Lineup[]>(() => data.filter((x)=>x.possessions > count || !filter), [data, count, filter]);
+  const tableData = useMemo<Lineup[]>(() => data.filter((x)=>x.possessions >= count || !filter), [data, count, filter]);
   const isMobile = useMediaQuery({maxWidth: '767px'});
 
   const tableColumns = useMemo<Column<Lineup>[]>(() => {
