@@ -126,7 +126,7 @@ const App = () => {
             ? data[selectedYear].season.count
             : selectedGame === -1
             ? data[selectedYear].conference.count
-            : 1
+            : 0
         }
       />
       {showReport && (
