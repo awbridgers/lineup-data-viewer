@@ -39,7 +39,7 @@ export const total = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'Lineup',
     accessor: 'players',
-    Cell: ({value}) => <>{value.replace(/-/g, '\n')}</>,
+    Cell: ({value}) => <>{value.replace(/\\/g, '\n')}</>,
     className: 'pre',
     disableSortBy: true,
     sticky: 'left',

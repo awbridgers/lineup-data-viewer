@@ -30,7 +30,7 @@ export const parsePlayers = (
   const playerData: Lineup[] = [];
   //create a new lineup with each individual player and cumulate their stats
     lineups.forEach((lineup) => {
-      lineup.players.split('-').forEach((player) => {
+      lineup.players.split('\\').forEach((player) => {
         const index = playerData.findIndex((x) => x.players === player);
         if(index === -1){
           //player is not yet in the array
