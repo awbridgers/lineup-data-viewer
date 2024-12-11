@@ -14,6 +14,7 @@ import {useMediaQuery} from 'react-responsive';
 import {useSticky} from 'react-table-sticky';
 
 import styled from 'styled-components';
+import { getHeaderName } from '../util/getHeaderName';
 
 interface iProps {
   data: Lineup[];
@@ -71,7 +72,7 @@ const Table = ({data, type, onClick, filter, count}: iProps) => {
             <div {...headerGroup.getHeaderGroupProps()} className="tr">
               {headerGroup.headers.map((column) => (
                 <div
-                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  {...column.getHeaderProps(column.getSortByToggleProps())} title = {getHeaderName(column.id)}
                   className={`th ${column.className}`}
                 >
                   {column.id === 'players_placeholder_0' && type === 'total' ? (

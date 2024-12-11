@@ -137,10 +137,10 @@ export class Lineup {
     return (possAgainst + possFor) / 2;
   }
   get oRating() {
-    return Math.round((this.pointsFor / this.possessions) * 100);
+    return (this.pointsFor / this.possessions) * 100;
   }
   get dRating() {
-    return Math.round((this.pointsAgainst / this.possessions) * 100);
+    return (this.pointsAgainst / this.possessions) * 100;
   }
   get threeARFor() {
     const {attemptedFor} = this.totalShots;

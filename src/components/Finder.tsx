@@ -167,23 +167,13 @@ const Styles = styled.div`
     align-items: center;
     justify-content: space-between;
   }
-  .submit{
+  .submit, .cancel{
     border-radius: 8px;
     width: 125px;
     height: 40px;
-    margin-top: 10px;
+    margin: 10px 5px;
     font-weight: bold;
     font-size: 16px;
-    margin: 5px 5px;
-  }
-  .cancel{
-    margin-top: 10px;
-    font-weight: bold;
-    font-size: 16px;
-    border-radius: 8px;
-    width: 125px;
-    height: 40px;
-    margin: 5px 5px;
   }
   .submit:hover, .cancel:hover{
     background-color: #808080;

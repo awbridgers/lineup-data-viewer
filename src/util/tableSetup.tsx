@@ -592,7 +592,7 @@ export const net = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'Lineup',
     accessor: 'players',
-    Cell: ({value}) => <>{value.replace(/-/g, '\n')}</>,
+    Cell: ({value}) => <>{value.replace(/\\/g, '\n')}</>,
     className: 'pre',
     sticky: 'left',
     width: isMobile ? 55 : 140,
@@ -834,7 +834,7 @@ export const advanced = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'Lineup',
     accessor: 'players',
-    Cell: ({value}) => <>{value.replace(/-/g, '\n')}</>,
+    Cell: ({value}) => <>{value.replace(/\\/g, '\n')}</>,
     className: 'pre',
     disableSortBy: true,
     width: isMobile ? 55 : 140,
@@ -867,6 +867,7 @@ export const advanced = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'O RTG',
     accessor: 'oRating',
+    Cell:({value})=><>{Math.round(value)}</>,
     sortDescFirst: true,
     sortType: sortNumbers,
     Footer: (info) => {
@@ -887,6 +888,7 @@ export const advanced = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'D RTG',
     accessor: 'dRating',
+    Cell: ({value})=><>{Math.round(value)}</>,
     sortDescFirst: false,
     sortType: sortNumbers,
     Footer: (info) => {
@@ -1040,7 +1042,7 @@ export const shooting = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'Lineup',
     accessor: 'players',
-    Cell: ({value}) => <>{value.replace(/-/g, '\n')}</>,
+    Cell: ({value}) => <>{value.replace(/\\/g, '\n')}</>,
     className: 'pre',
     disableSortBy: true,
     width: isMobile ? 55 : 150,
