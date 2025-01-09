@@ -115,7 +115,7 @@ const Finder = ({year, players, changePlayers, cancel,submit}: FinderProps) => {
         {players.length < 10 && <button onClick = {()=>changePlayers(prev=>[...prev, {name: '', type: 'include'}])}>Add More</button>}
       </div>
       <div>
-        <button className = 'submit' onClick = {submit}>Find Lineups</button>
+        <button className = 'submit' onClick = {submit}>Search</button>
         <button className = 'cancel' onClick = {cancel}>Cancel</button>
       </div>
     </Styles>

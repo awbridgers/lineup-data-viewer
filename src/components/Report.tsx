@@ -113,8 +113,8 @@ const PlayerReport = ({data, back}: IProps) => {
         <tbody>
           <tr>
             <td>O Rtg</td>
-            <td>{onCourt?.oRating}</td>
-            <td>{onBench?.oRating}</td>
+            <td>{onCourt?.oRating.toFixed(1)}</td>
+            <td>{onBench?.oRating.toFixed(1)}</td>
             <td
               className="diff"
               style={styleNum(onCourt?.oRating, onBench?.oRating)}
@@ -126,8 +126,8 @@ const PlayerReport = ({data, back}: IProps) => {
           </tr>
           <tr>
             <td>D Rtg</td>
-            <td>{onCourt?.dRating}</td>
-            <td>{onBench?.dRating}</td>
+            <td>{onCourt?.dRating.toFixed(1)}</td>
+            <td>{onBench?.dRating.toFixed(1)}</td>
             <td
               className="diff"
               style={styleNum(onBench?.dRating, onCourt?.dRating)}

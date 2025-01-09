@@ -856,7 +856,7 @@ export const advanced = (isMobile: boolean): Array<Column<Lineup>> => [
       const total = useMemo(
         () =>
           info.rows.reduce(
-            (prev, current) => prev + current.values.possessions,
+            (prev, current) => prev + current.original.possessions,
             0
           ),
         [info.rows]
