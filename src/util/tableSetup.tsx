@@ -909,7 +909,7 @@ export const advanced = (isMobile: boolean): Array<Column<Lineup>> => [
     Header: 'Net RTG',
     accessor: 'netRating',
     Cell: ({value})=><>{format.format(value)}</>,
-    sortDescFirst: false,
+    sortDescFirst: true,
     sortType: sortNumbers,
     Footer: (info) => {
       const total = useMemo(() => {
