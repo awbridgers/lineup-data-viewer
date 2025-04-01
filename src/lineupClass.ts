@@ -142,6 +142,9 @@ export class Lineup {
   get dRating() {
     return (this.pointsAgainst / this.possessions) * 100;
   }
+  get netRating(){
+    return this.oRating - this.dRating
+  }
   get threeARFor() {
     const {attemptedFor} = this.totalShots;
     return (this.attemptedThreesFor / attemptedFor);

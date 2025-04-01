@@ -10,7 +10,7 @@ interface SortProps {
   desc: boolean;
 }
 
-const format = new Intl.NumberFormat('en-us', {signDisplay: 'always'});
+const format = new Intl.NumberFormat('en-us', {signDisplay: 'always', maximumFractionDigits:2});
 const sortNumbers = (
   rowA: Row<Lineup>,
   rowB: Row<Lineup>,
@@ -867,7 +867,7 @@ export const advanced = (isMobile: boolean): Array<Column<Lineup>> => [
   {
     Header: 'O RTG',
     accessor: 'oRating',
-    Cell:({value})=><>{Math.round(value)}</>,
+    Cell:({value})=><>{value.toFixed(2)}</>,
     sortDescFirst: true,
     sortType: sortNumbers,
     Footer: (info) => {
@@ -880,15 +880,15 @@ export const advanced = (isMobile: boolean): Array<Column<Lineup>> => [
           (prev, current) => prev + current.original.pointsFor,
           0
         );
-        return Math.round((points / poss) * 100);
+        return (points / poss) * 100;
       }, [info.rows]);
-      return <>{total}</>;
+      return <>{total.toFixed(2)}</>;
     },
   },
   {
     Header: 'D RTG',
     accessor: 'dRating',
-    Cell: ({value})=><>{Math.round(value)}</>,
+    Cell: ({value})=><>{value.toFixed(2)}</>,
     sortDescFirst: false,
     sortType: sortNumbers,
     Footer: (info) => {
@@ -901,9 +901,40 @@ export const advanced = (isMobile: boolean): Array<Column<Lineup>> => [
           (prev, current) => prev + current.original.pointsAgainst,
           0
         );
-        return Math.round((points / poss) * 100);
+        return (points / poss) * 100;
       }, [info.rows]);
-      return <>{total}</>;
+      return <>{total.toFixed(2)}</>;
+    },
+  },{
+    Header: 'Net RTG',
+    accessor: 'netRating',
+    Cell: ({value})=><>{format.format(value)}</>,
+    sortDescFirst: false,
+    sortType: sortNumbers,
+    Footer: (info) => {
+      const total = useMemo(() => {
+        const possFor = info.rows.reduce(
+          (prev, current) => prev + current.original.possessions,
+          0
+        );
+        const pointsFor = info.rows.reduce(
+          (prev, current) => prev + current.original.pointsFor,
+          0
+        );
+        const possAgainst = info.rows.reduce(
+          (prev, current) => prev + current.original.possessions,
+          0
+        );
+        const pointsAgainst = info.rows.reduce(
+          (prev, current) => prev + current.original.pointsAgainst,
+          0
+        );
+        const oRating = pointsFor/possFor * 100
+        const dRating = pointsAgainst/possAgainst * 100;
+        return (oRating - dRating);
+       
+      }, [info.rows]);
+      return <>{format.format(total)}</>;
     },
   },
 
