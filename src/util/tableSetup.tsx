@@ -1552,6 +1552,7 @@ export const csvHeaders = [
   {label: '2nd Chance', key: 'values.secondFor'},
   {label: 'Ast', key: 'values.assistsFor'},
   {label: 'TO', key: 'values.turnoversFor'},
+  {label: 'OPP', key: ''},
   {label: 'Pts', key: 'values.pointsAgainst'},
   {label: 'Drb', key: 'values.dRebAgainst'},
   {label: 'Orb', key: 'values.oRebAgainst'},

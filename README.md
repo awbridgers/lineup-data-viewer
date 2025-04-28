@@ -1,46 +1,36 @@
-# Getting Started with Create React App
+# Lineup Data Viewer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A convenient way to view lineup data from the Wake Forest Basketball team. Its like BBallRef, but for lineups.
 
-## Available Scripts
+Site is live [here](https://awbridgers.github.io/lineup-data-viewer/).
 
-In the project directory, you can run:
+![Home Page](./homePage.png)
 
-### `npm start`
+ 
+ ---
+## Features
+### Data
+The viewer has the ability to show several types of data, from raw totals for Wake and their opponent to more advanced analytics.
+* Use the `Season` dropdown to change the year.
+* The `Game` dropdown allows the user to filter by the whole season, conference games, or individual games.
+* The `Stat Type` dropdown filters by raw data, net +/-, advanced per possession data, and shooting data.
+* The `Group` dropdown switches between lineups, individual players, and year-to-year. The individiual stats are stats for the TEAM while that player is on the court. The year-to-year data is the team as a whole for an entire season.
+* The `Poss Limit` switch will filter out any lineups that didn't meet the possession requirement of 1 possession per game.
+### Lineup Finder
+<img src = './lineupFinder.png' width = 300>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Hit the `Search Lineups` button on the left side of the control panel to open the Lineup Finder tool. The Lineup Finder allows uses to search for all lineups that contain or omit certain players. 
+1. select the player from the drop down
+2. chose whether to omit or include that player
+3. add more player lines as you need them with the `Add More` button
+4. Hit `Search` when you are done to see filtered lineups.
+5. Press `Exit Finder` at the top of the screen to return back to unfilited data. 
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Player Report
+<img src = './playerReport.png' width = 300>
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+To quickly see how a player impacts the team when they are on the court, click the `Report` link available in the header of the Total Stats page. This will show how the team faired in several key analytics with that player on the court vs on the bench. You can select `ACC Play Only` to see stats only from conference play.
+### Download
+The `Download` button on the Total Stats page will download a copy of the raw data in a excel spreadsheet format. 
+## Author 
+Adam Bridgers
