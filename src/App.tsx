@@ -51,7 +51,7 @@ const App = () => {
     if (!data[gender][year]) {
       //this data doesn't exist
       const newData = await fetchData(year, gender);
-      console.log(newData, game)
+      //console.log(newData, game)
       setDisplayData(newData[game][selectedGroup]);
     } else {
       setDisplayData(data[gender][year][game][selectedGroup]);
@@ -61,7 +61,7 @@ const App = () => {
   };
   //change the selected game/category
   const changeGame = (index: number) => {
-    console.log('test')
+    //console.log('test')
     if (finderActive) {
       findLineups(index);
     } else {

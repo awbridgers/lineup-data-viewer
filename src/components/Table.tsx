@@ -93,12 +93,12 @@ const Table = ({data, type, onClick, filter, count}: iProps) => {
                       title={getHeaderName(column.id)}
                       className={`th ${column.className}`}
                     >
-                      {column.id === 'players_placeholder_0' &&
+                      {column.id === 'totalPlayers_placeholder_0' &&
                       type === 'total' ? (
                         <CSVLink headers={csvHeaders} data={rows}>
                           Download
                         </CSVLink>
-                      ) : column.id === 'time_placeholder_1' &&
+                      ) : column.id === 'totalTime_placeholder_1' &&
                         type === 'total' ? (
                         <div style={{cursor: 'pointer'}} onClick={onClick}>
                           Report
